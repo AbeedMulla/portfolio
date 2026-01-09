@@ -2,7 +2,7 @@
 
 An interactive, single-page portfolio built with **React**, featuring smooth section navigation, project case-study pages, a custom animated background system, and a robot mascot UI.
 
-> Live Link: 
+> Live Link: https://abeed-mulla.vercel.app/
 
 ---
 
