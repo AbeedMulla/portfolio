@@ -245,9 +245,37 @@ const experienceData = [
         title: 'Cashier & Line Cook',
         org: "McDonald's",
         location: 'Halifax, NS',
-        date: 'Nov 2024 – Present',
+        date: 'Nov 2025 – Present',
         details: ['High-pressure environment', 'Customer service and team collaboration'],
     },
+    {
+        type: 'work',
+        title: 'Data Analyst',
+        org: 'Mandovi Drydocks',
+        location: 'Goa, India',
+        date: 'May 2023 – Aug 2023',
+        details: [
+            'Excel & SQL analysis',
+            'Operational reporting',
+            'Data cleaning & validation',
+            '20% accuracy improvement',
+            'Decision-making support'
+          ]
+        },
+    
+        {
+            type: 'work',
+            title: 'IT Support',
+            org: 'Sian Technologies',
+            location: 'Goa, India',
+            date: 'Aug 2021 – May 2022',
+            details: [
+                'Technical troubleshooting',
+                'Windows systems',
+                '30+ tickets/week',
+                '25% faster resolution'
+              ]
+          },
     {
         type: 'work',
         title: 'Grill Cook',
@@ -1303,6 +1331,31 @@ function MainPortfolio() {
                     {mobileMenuOpen && (
                         <div className="mobile-menu" style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: theme.surface, borderBottom: `1px solid ${theme.border}`, padding: '16px 24px' }}>
                             {navLinks.map((link) => (<a key={link.href} href={link.href} style={{ ...styles.navLink, display: 'block', padding: '12px 0' }} onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}>{link.label}</a>))}
+                            {/* Mobile Theme Toggle */}
+                            <div style={{ borderTop: `1px solid ${theme.border}`, marginTop: '12px', paddingTop: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontSize: '14px', color: theme.textMuted }}>Theme</span>
+                                <button 
+                                    onClick={() => setDarkMode(!darkMode)} 
+                                    style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: '8px', 
+                                        padding: '8px 14px', 
+                                        borderRadius: '8px', 
+                                        border: `1px solid ${theme.border}`, 
+                                        backgroundColor: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)', 
+                                        color: theme.text, 
+                                        cursor: 'pointer',
+                                        fontSize: '13px',
+                                        fontWeight: 500,
+                                        fontFamily: "'Sora', sans-serif",
+                                    }}
+                                    aria-label="Toggle theme"
+                                >
+                                    {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+                                    {darkMode ? 'Light' : 'Dark'}
+                                </button>
+                            </div>
                         </div>
                     )}
                 </nav>
