@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Moon, Sun, Mail, Linkedin, Github, ExternalLink, ChevronDown, Download, ArrowRight, Code2, Database, Globe, Terminal, Cpu, ChevronLeft, ChevronRight, X, Send } from 'lucide-react';
+import { Moon, Sun, Mail, Linkedin, Github, ExternalLink, ChevronDown, Download, ArrowRight, Code2, Database, Globe, Terminal, Cpu, ChevronLeft, ChevronRight, X, Send, Briefcase, GraduationCap, Award, MapPin, Calendar, Wrench, Users, MonitorSmartphone, Server, GitBranch, Lightbulb, Layers } from 'lucide-react';
 
 // ============================================
 // ABEED MULLA — PORTFOLIO
@@ -231,73 +231,135 @@ for i in {1..10}; do curl -s http://localhost:8080/ping; done`,
     },
 ];
 
-const experienceData = [
+// Experience & Education Data
+const axisExperience = {
+    company: 'AXIS Capital',
+    url: 'https://www.axiscapital.com/canada/home',
+    location: 'Halifax, Nova Scotia',
+    roles: [
+        {
+            title: 'Software Engineer Intern',
+            type: 'Part-time',
+            date: 'Sep 2026 – Present',
+            current: true,
+            description: 'Continuing to contribute to Compass NextGen, an internal reinsurance workflow platform, by developing and maintaining full-stack functionality.',
+            points: [
+                'Develop and maintain application features using React, TypeScript, backend APIs, and SQL Server.',
+                'Contribute to UI improvements, API integration, bug fixes, and application functionality.',
+                'Collaborate with engineers through code reviews, Git, Azure DevOps, and Agile development workflows.',
+            ],
+        },
+        {
+            title: 'Reinsurance Systems Engineer Co-op',
+            type: 'Co-op',
+            date: 'May 2026 – Aug 2026',
+            current: false,
+            description: 'Contributed to the development of Compass NextGen, helping modernize internal reinsurance workflows through full-stack application development.',
+            points: [
+                'Completed 25+ user stories and bug fixes involving contract management, validation, coverage, and UI/UX functionality.',
+                'Developed features using React and TypeScript, including contract-related functionality and business-rule validation.',
+                'Implemented improvements involving filtering, data synchronization, and application workflows.',
+            ],
+        },
+    ],
+    tags: ['React', 'TypeScript', '.NET APIs', 'SQL Server', 'Git', 'Azure DevOps', 'Agile'],
+};
+
+const previousTechExperience = [
     {
-        type: 'education',
-        title: 'Bachelor of Computer Science (Honours)',
-        org: 'Dalhousie University',
-        location: 'Halifax, NS',
-        date: 'Expected Oct 2026',
-        details: ['Algorithms & Data Structures', 'Operating Systems', 'Computer Networks', 'Software Engineering', 'Databases'],
-    },
-    {
-        type: 'work',
-        title: 'Cashier & Line Cook',
-        org: "McDonald's",
-        location: 'Halifax, NS',
-        date: 'Nov 2025 – Present',
-        details: ['High-pressure environment', 'Customer service and team collaboration'],
-    },
-    {
-        type: 'work',
         title: 'Data Analyst',
         org: 'Mandovi Drydocks',
         location: 'Goa, India',
         date: 'May 2023 – Aug 2023',
-        details: [
-            'Excel & SQL analysis',
-            'Operational reporting',
-            'Data cleaning & validation',
-            '20% accuracy improvement',
-            'Decision-making support'
-          ]
-        },
-    
-        {
-            type: 'work',
-            title: 'IT Support',
-            org: 'Sian Technologies',
-            location: 'Goa, India',
-            date: 'Aug 2021 – May 2022',
-            details: [
-                'Technical troubleshooting',
-                'Windows systems',
-                '30+ tickets/week',
-                '25% faster resolution'
-              ]
-          },
+        description: 'Worked with Excel and SQL to analyze operational data, improve data quality, and support reporting and business decisions.',
+        tags: ['SQL', 'Excel', 'Data Analysis', 'Reporting'],
+    },
     {
-        type: 'work',
+        title: 'IT Support',
+        org: 'Sian Technologies',
+        location: 'Goa, India',
+        date: 'Aug 2021 – May 2022',
+        description: 'Provided technical support by troubleshooting hardware, software, Windows systems, and networking issues while resolving support requests.',
+        tags: ['Troubleshooting', 'Windows', 'Networking', 'Technical Support'],
+    },
+];
+
+const educationData = {
+    school: 'Dalhousie University',
+    url: 'https://www.dal.ca',
+    degree: 'Bachelor of Computer Science (Honours, Co-op)',
+    location: 'Halifax, Nova Scotia',
+    date: 'Sep 2022 – Expected Dec 2026',
+    award: {
+        title: 'Sexton Scholar',
+        summary: '3 Terms',
+        terms: ['Summer 2025', 'Fall 2025', 'Winter 2026'],
+    },
+};
+
+const otherWorkExperience = [
+    {
+        title: 'Cashier & Line Cook',
+        org: "McDonald's",
+        location: 'Halifax, Nova Scotia',
+        date: 'Dec 2025 – Aug 2026',
+        description: 'Worked in a fast-paced environment, handling customer service, food preparation, and daily operations while collaborating with team members.',
+    },
+    {
         title: 'Grill Cook',
         org: 'Mezza Lebanese Kitchen',
-        location: 'Halifax, NS',
-        date: '2021 – 2022',
-        details: ['Team coordination in fast-paced environment', 'Reliability under pressure'],
+        location: 'Halifax, Nova Scotia',
+        date: 'Oct 2022 – Mar 2023',
+        description: 'Supported kitchen operations, food preparation, and team coordination in a fast-paced restaurant environment.',
     },
 ];
 
 const skillsData = {
-    'Languages': ['Java', 'Python', 'C', 'C++', 'JavaScript', 'HTML5', 'CSS3'],
-    'Frontend': ['React', 'Tailwind CSS', 'Bootstrap', 'Responsive Design'],
-    'Backend': ['Node.js', 'Flask', 'Express', 'REST APIs', 'Firebase', 'MySQL', 'MongoDB'],
-    'Tools & Systems': ['Git', 'GitHub', 'Linux', 'Android Studio', 'Postman', 'TCP/UDP', 'Wireshark'],
+    'Languages': [
+        'TypeScript', 'JavaScript', 'Java', 'Python',
+        'C#', 'C++', 'C', 'SQL'
+    ],
+    'Frontend & Mobile': [
+        'React', 'React Native', 'Tailwind CSS',
+        'HTML5', 'CSS3', 'Android'
+    ],
+    'Backend & APIs': [
+        '.NET APIs', 'Node.js', 'REST APIs', 'Firebase'
+    ],
+    'Databases': [
+        'SQL Server', 'MySQL', 'PostgreSQL',
+        'SQLite', 'Firebase Firestore'
+    ],
+    'Developer Tools': [
+        'Git', 'GitHub', 'Azure DevOps',
+        'Visual Studio', 'VS Code', 'Postman',
+        'Linux', 'Android Studio', 'Jira'
+    ],
+    'Engineering Concepts': [
+        'Object-Oriented Programming',
+        'Data Structures & Algorithms',
+        'Agile Development',
+        'API Integration',
+        'Code Reviews'
+    ],
 };
+
+const skillIcons = {
+    'Languages': Terminal,
+    'Frontend & Mobile': MonitorSmartphone,
+    'Backend & APIs': Server,
+    'Databases': Database,
+    'Developer Tools': GitBranch,
+    'Engineering Concepts': Lightbulb,
+};
+
+const professionalStack = ['React', 'TypeScript', '.NET APIs', 'SQL Server', 'Azure DevOps', 'Git'];
 
 const navLinks = [
     { label: 'About', href: '#about' },
     { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
     { label: 'Experience', href: '#experience' },
+    { label: 'Projects', href: '#projects' },
     { label: 'Contact', href: '#contact' },
 ];
 
@@ -865,7 +927,7 @@ function MainPortfolio() {
 
     // Section tracking with IntersectionObserver for background morphing
     useEffect(() => {
-        const sectionIds = ['hero', 'about', 'skills', 'projects', 'experience', 'contact'];
+        const sectionIds = ['hero', 'about', 'skills', 'experience', 'projects', 'contact'];
         const observers = [];
         const visibilityMap = {};
 
@@ -1286,6 +1348,31 @@ function MainPortfolio() {
         .carousel-container { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .carousel-container::-webkit-scrollbar { display: none; }
         .carousel-card { scroll-snap-align: center; flex-shrink: 0; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.reveal-visible { opacity: 1; transform: none; }
+        .exp-card { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+        @media (hover: hover) {
+          .exp-card:hover { transform: translateY(-4px); border-color: var(--exp-hover-border) !important; box-shadow: var(--exp-hover-shadow) !important; }
+          .exp-card-flat:hover { transform: none; }
+        }
+        .exp-link { color: inherit; text-decoration: none; }
+        .exp-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 1; }
+        .exp-link:focus-visible { outline: none; }
+        .exp-link:focus-visible::after { outline: 2px solid #3b82f6; outline-offset: 2px; }
+        .exp-link-icon { opacity: 0.5; transition: opacity 0.2s ease, transform 0.2s ease; }
+        .exp-card:hover .exp-link-icon, .exp-link:focus-visible .exp-link-icon { opacity: 1; transform: translate(2px, -2px); }
+        .skills-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+        @media (max-width: 1024px) { .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { .skills-grid { grid-template-columns: minmax(0, 1fr); } }
+        .skill-tag { transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease; }
+        .skill-tag:hover { border-color: var(--skill-tag-hover) !important; color: var(--skill-tag-hover-text) !important; }
+        .exp-current-dot { animation: expPulse 2.4s ease-in-out infinite; }
+        @keyframes expPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.45); } 50% { box-shadow: 0 0 0 5px rgba(59,130,246,0); } }
+        @media (prefers-reduced-motion: reduce) {
+          .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+          .exp-card, .exp-card:hover { transform: none !important; }
+          .exp-current-dot { animation: none !important; }
+        }
         @media (max-width: 768px) { 
           .desktop-nav { display: none !important; } 
           .mobile-menu-btn { display: flex !important; }
@@ -1575,9 +1662,9 @@ function MainPortfolio() {
                         <h2 style={{ ...styles.heading, marginBottom: '48px' }}>How I Approach Software Development</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
                             <div>
-                                <p style={{ ...styles.paragraph, marginBottom: '24px' }}>I'm a Computer Science Honours student at Dalhousie University, focused on building scalable, reliable software for real-world use.</p>
-                                <p style={{ ...styles.paragraph, marginBottom: '24px' }}>My approach is to understand systems deeply before writing code. I ask: What happens at the edges? How does this scale?</p>
-                                <p style={styles.paragraph}>Currently seeking <strong style={{ color: theme.text }}>Summer 2026 internships</strong> where I can contribute to production systems.</p>
+                                <p style={{ ...styles.paragraph, marginBottom: '24px' }}>I enjoy building software that solves real problems and is reliable, practical, and easy to use. Whether I'm working on a user interface, backend functionality, or debugging an issue, I like understanding how things work and finding solutions that make sense.</p>
+                                <p style={{ ...styles.paragraph, marginBottom: '24px' }}>At AXIS Capital, I started as a Reinsurance Systems Engineer Co-op and now continue part-time as a Software Engineer Intern. Working on Compass NextGen has given me hands-on experience developing production features, resolving bugs, and collaborating with an engineering team.</p>
+                                <p style={styles.paragraph}>As I approach graduation in December 2026, I'm looking forward to applying what I've learned, taking on new challenges, and continuing to grow as a developer. I'm currently exploring <strong style={{ color: theme.text }}>full-time opportunities</strong> across software development.</p>
                             </div>
                             <div style={{ ...styles.card, backgroundColor: darkMode ? 'rgba(10,10,11,0.7)' : 'rgba(250,250,250,0.8)' }}>
                                 <h3 style={{ fontSize: '16px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}><Code2 size={18} style={{ color: theme.accent }} />Programming Principles I Care About</h3>
@@ -1594,29 +1681,19 @@ function MainPortfolio() {
                 {/* Skills Section */}
                 <section id="skills" style={styles.section}>
                     <div style={styles.container}>
-                        <p style={styles.sectionTitle}>Skills</p>
-                        <h2 style={{ ...styles.heading, marginBottom: '48px' }}>Technical Stack</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-                            {Object.entries(skillsData).map(([category, items]) => (
-                                <div key={category} style={styles.card}>
-                                    <h3 style={{ fontSize: '14px', fontWeight: 600, color: theme.textMuted, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        {category === 'Languages' && <Terminal size={16} style={{ color: theme.accent }} />}
-                                        {category === 'Frontend' && <Globe size={16} style={{ color: theme.accent }} />}
-                                        {category === 'Backend' && <Database size={16} style={{ color: theme.accent }} />}
-                                        {category === 'Tools & Systems' && <Cpu size={16} style={{ color: theme.accent }} />}
-                                        {category}
-                                    </h3>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                        {items.map((skill) => (<span key={skill} style={{ ...styles.tag, ...styles.mono, fontSize: '12px' }}>{skill}</span>))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        <SkillsSection theme={theme} darkMode={darkMode} styles={styles} />
+                    </div>
+                </section>
+
+                {/* Experience Section */}
+                <section id="experience" style={{ ...styles.section, backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.5)', backdropFilter: 'blur(8px)' }}>
+                    <div style={styles.container}>
+                        <ExperienceSection theme={theme} darkMode={darkMode} styles={styles} />
                     </div>
                 </section>
 
                 {/* Projects Section - Carousel */}
-                <section id="projects" style={{ ...styles.section, backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.5)', backdropFilter: 'blur(8px)' }}>
+                <section id="projects" style={styles.section}>
                     <div style={styles.container}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '48px' }}>
                             <div>
@@ -1628,31 +1705,6 @@ function MainPortfolio() {
                         </div>
                     </div>
                     <ProjectCarousel projects={projectsData} theme={theme} darkMode={darkMode} styles={styles} />
-                </section>
-
-                {/* Experience Section */}
-                <section id="experience" style={styles.section}>
-                    <div style={styles.container}>
-                        <p style={styles.sectionTitle}>Experience</p>
-                        <h2 style={{ ...styles.heading, marginBottom: '48px' }}>Education & Work</h2>
-                        <div style={{ position: 'relative', paddingLeft: '24px' }}>
-                            <div style={{ position: 'absolute', left: '4px', top: '8px', bottom: '8px', width: '2px', backgroundColor: theme.border }} />
-                            {experienceData.map((item, index) => (
-                                <div key={index} style={{ position: 'relative', marginBottom: index === experienceData.length - 1 ? 0 : '40px' }}>
-                                    <div style={{ position: 'absolute', left: '-24px', top: '6px', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: item.type === 'education' ? theme.accent : theme.textMuted, border: `2px solid ${darkMode ? '#0a0a0b' : '#fafafa'}` }} />
-                                    <span style={{ fontSize: '12px', color: item.type === 'education' ? theme.accent : theme.textMuted, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px' }}>{item.type === 'education' ? 'Education' : 'Work Experience'}</span>
-                                    <h3 style={{ fontSize: '18px', fontWeight: 600, marginTop: '4px' }}>{item.title}</h3>
-                                    <p style={{ fontSize: '14px', color: theme.textMuted, marginTop: '4px' }}>{item.org} · {item.location}</p>
-                                    <p style={{ fontSize: '13px', color: theme.textMuted, marginTop: '2px' }}>{item.date}</p>
-                                    {item.details && (
-                                        <div style={{ marginTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                            {item.details.map((detail, i) => (<span key={i} style={{ fontSize: '12px', color: theme.textMuted, padding: '4px 10px', backgroundColor: theme.surface, borderRadius: '4px', border: `1px solid ${theme.border}` }}>{detail}</span>))}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                 </section>
 
                 {/* Contact Section */}
@@ -1854,6 +1906,343 @@ function MainPortfolio() {
                 </footer>
             </div>
         </>
+    );
+}
+
+// ============================================
+// SKILLS
+// ============================================
+
+function SkillsSection({ theme, darkMode, styles }) {
+    const cardBase = {
+        backgroundColor: darkMode ? 'rgba(15,15,17,0.85)' : 'rgba(255,255,255,0.95)',
+        border: `1px solid ${theme.border}`,
+        borderRadius: '16px',
+        boxShadow: darkMode ? '0 4px 20px rgba(0,0,0,0.25)' : '0 4px 16px rgba(0,0,0,0.04)',
+        '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.5)' : 'rgba(59,130,246,0.4)',
+        '--exp-hover-shadow': darkMode ? '0 0 30px rgba(59,130,246,0.1), 0 16px 40px rgba(0,0,0,0.35)' : '0 0 24px rgba(59,130,246,0.07), 0 12px 32px rgba(0,0,0,0.08)',
+    };
+    const iconBox = (size) => ({ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: `${size}px`, height: `${size}px`, borderRadius: size > 36 ? '12px' : '10px', backgroundColor: theme.accentMuted, color: theme.accent, flexShrink: 0 });
+    const tag = {
+        ...styles.mono,
+        display: 'inline-block',
+        padding: '5px 11px',
+        fontSize: '12px',
+        fontWeight: 500,
+        lineHeight: 1.4,
+        borderRadius: '8px',
+        border: `1px solid ${theme.border}`,
+        backgroundColor: darkMode ? 'rgba(255,255,255,0.03)' : '#fafafa',
+        color: theme.text,
+        '--skill-tag-hover': darkMode ? 'rgba(59,130,246,0.55)' : 'rgba(59,130,246,0.45)',
+        '--skill-tag-hover-text': theme.accent,
+    };
+
+    return (
+        <div>
+            <p style={styles.sectionTitle}>Technical Expertise</p>
+            <h2 style={{ ...styles.heading, marginBottom: '16px' }}>Technologies & Tools</h2>
+            <p style={{ ...styles.paragraph, marginBottom: '48px' }}>Tools and technologies I've used to build applications, solve problems, and collaborate on software projects.</p>
+
+            {/* Professional Stack */}
+            <Reveal>
+                <div
+                    className="exp-card"
+                    style={{
+                        ...cardBase,
+                        border: `1px solid ${darkMode ? 'rgba(59,130,246,0.35)' : 'rgba(59,130,246,0.3)'}`,
+                        backgroundColor: darkMode ? 'rgba(17,22,34,0.85)' : 'rgba(239,246,255,0.85)',
+                        boxShadow: darkMode ? '0 0 32px rgba(59,130,246,0.08), 0 8px 28px rgba(0,0,0,0.28)' : '0 0 28px rgba(59,130,246,0.06), 0 8px 24px rgba(0,0,0,0.04)',
+                        '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.6)' : 'rgba(59,130,246,0.5)',
+                        padding: 'clamp(20px, 3vw, 28px) clamp(20px, 3.5vw, 32px)',
+                        marginBottom: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '20px 32px',
+                    }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                        <span aria-hidden="true" style={iconBox(44)}><Briefcase size={20} /></span>
+                        <div>
+                            <h3 style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.3, marginBottom: '2px' }}>Professional Stack</h3>
+                            <p style={{ fontSize: '13px', color: theme.textMuted, margin: 0 }}>Technologies used in my work at AXIS Capital</p>
+                        </div>
+                    </div>
+                    <ul aria-label="Professional stack" style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '8px', margin: 0, padding: 0 }}>
+                        {professionalStack.map((item) => (
+                            <li
+                                key={item}
+                                className="skill-tag"
+                                style={{
+                                    ...tag,
+                                    fontSize: '13px',
+                                    padding: '7px 14px',
+                                    color: theme.accent,
+                                    border: `1px solid ${darkMode ? 'rgba(59,130,246,0.3)' : 'rgba(59,130,246,0.25)'}`,
+                                    backgroundColor: darkMode ? 'rgba(59,130,246,0.1)' : '#ffffff',
+                                    '--skill-tag-hover': theme.accent,
+                                }}
+                            >
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </Reveal>
+
+            {/* Skill categories */}
+            <div className="skills-grid">
+                {Object.entries(skillsData).map(([category, items], index) => {
+                    const Icon = skillIcons[category] || Layers;
+                    return (
+                        <Reveal key={category} delay={(index % 3) * 80} style={{ display: 'flex' }}>
+                            <div className="exp-card" style={{ ...cardBase, padding: '22px 24px 24px', width: '100%' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
+                                    <span aria-hidden="true" style={iconBox(34)}><Icon size={17} /></span>
+                                    <h3 style={{ fontSize: '15px', fontWeight: 600, color: theme.text, margin: 0, flex: 1 }}>{category}</h3>
+                                    <span aria-hidden="true" style={{ ...styles.mono, fontSize: '11px', color: theme.textMuted }}>{String(items.length).padStart(2, '0')}</span>
+                                </div>
+                                <ul aria-label={category} style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '8px', margin: 0, padding: 0 }}>
+                                    {items.map((skill) => (
+                                        <li key={skill} className="skill-tag" style={tag}>{skill}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </Reveal>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+// ============================================
+// EXPERIENCE & EDUCATION
+// ============================================
+
+function Reveal({ children, delay = 0, style }) {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const node = ref.current;
+        if (!node || typeof IntersectionObserver === 'undefined') {
+            setVisible(true);
+            return;
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        );
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} className={`reveal${visible ? ' reveal-visible' : ''}`} style={{ transitionDelay: `${delay}ms`, ...style }}>
+            {children}
+        </div>
+    );
+}
+
+function ExperienceSubheading({ icon: Icon, title, theme }) {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span aria-hidden="true" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: theme.accentMuted, color: theme.accent, flexShrink: 0 }}>
+                <Icon size={16} />
+            </span>
+            <h3 style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', color: theme.text, margin: 0 }}>{title}</h3>
+            <span aria-hidden="true" style={{ flex: 1, minWidth: '24px', height: '1px', backgroundColor: theme.border }} />
+        </div>
+    );
+}
+
+function MetaLine({ icon: Icon, children, theme }) {
+    return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: theme.textMuted }}>
+            <Icon size={14} aria-hidden="true" style={{ flexShrink: 0 }} />
+            {children}
+        </span>
+    );
+}
+
+function ExperienceSection({ theme, darkMode, styles }) {
+    const cardBase = {
+        backgroundColor: darkMode ? 'rgba(15,15,17,0.85)' : 'rgba(255,255,255,0.95)',
+        border: `1px solid ${theme.border}`,
+        borderRadius: '16px',
+        boxShadow: darkMode ? '0 4px 20px rgba(0,0,0,0.25)' : '0 4px 16px rgba(0,0,0,0.04)',
+        '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.5)' : 'rgba(59,130,246,0.4)',
+        '--exp-hover-shadow': darkMode ? '0 0 30px rgba(59,130,246,0.12), 0 16px 40px rgba(0,0,0,0.35)' : '0 0 24px rgba(59,130,246,0.08), 0 12px 32px rgba(0,0,0,0.08)',
+    };
+    const featuredCard = {
+        ...cardBase,
+        border: `1px solid ${darkMode ? 'rgba(59,130,246,0.35)' : 'rgba(59,130,246,0.3)'}`,
+        boxShadow: darkMode ? '0 0 40px rgba(59,130,246,0.1), 0 8px 32px rgba(0,0,0,0.3)' : '0 0 32px rgba(59,130,246,0.07), 0 8px 24px rgba(0,0,0,0.05)',
+        '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.6)' : 'rgba(59,130,246,0.5)',
+        '--exp-hover-shadow': darkMode ? '0 0 48px rgba(59,130,246,0.16), 0 16px 40px rgba(0,0,0,0.35)' : '0 0 36px rgba(59,130,246,0.1), 0 12px 32px rgba(0,0,0,0.08)',
+        padding: 'clamp(24px, 4vw, 40px)',
+    };
+    const chip = { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', fontSize: '12px', fontWeight: 500, borderRadius: '999px', border: `1px solid ${theme.border}`, color: theme.textMuted, whiteSpace: 'nowrap' };
+    const subsection = { marginTop: '64px' };
+
+    return (
+        <div>
+            <p style={styles.sectionTitle}>Experience</p>
+            <h2 style={{ ...styles.heading, marginBottom: '16px' }}>Experience & Education</h2>
+            <p style={{ ...styles.paragraph, marginBottom: '56px' }}>From building personal projects to contributing to real-world software.</p>
+
+            {/* Professional Experience — AXIS Capital */}
+            <ExperienceSubheading icon={Briefcase} title="Professional Experience" theme={theme} />
+            <Reveal>
+                <article className="exp-card" style={{ ...featuredCard, position: 'relative', cursor: 'pointer' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' }}>
+                        <div>
+                            <h4 style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 600, lineHeight: 1.2, marginBottom: '8px' }}>
+                                <a href={axisExperience.url} target="_blank" rel="noopener noreferrer" className="exp-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                                    {axisExperience.company}
+                                    <ExternalLink size={18} aria-hidden="true" className="exp-link-icon" style={{ color: theme.accent }} />
+                                    <span style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>(opens in a new tab)</span>
+                                </a>
+                            </h4>
+                            <MetaLine icon={MapPin} theme={theme}>{axisExperience.location}</MetaLine>
+                        </div>
+                    </div>
+
+                    <ol style={{ listStyle: 'none', position: 'relative', margin: 0, padding: 0 }}>
+                        <span aria-hidden="true" style={{ position: 'absolute', left: '5px', top: '8px', bottom: '8px', width: '2px', backgroundColor: darkMode ? 'rgba(59,130,246,0.25)' : 'rgba(59,130,246,0.2)' }} />
+                        {axisExperience.roles.map((role, index) => (
+                            <li key={role.title} style={{ position: 'relative', paddingLeft: '32px', paddingBottom: index === axisExperience.roles.length - 1 ? 0 : '32px' }}>
+                                <span
+                                    aria-hidden="true"
+                                    className={role.current ? 'exp-current-dot' : undefined}
+                                    style={{ position: 'absolute', left: 0, top: '6px', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: role.current ? theme.accent : (darkMode ? '#0f0f11' : '#ffffff'), border: `2px solid ${theme.accent}` }}
+                                />
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px 16px', marginBottom: '10px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                                        <h5 style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.3, margin: 0 }}>{role.title}</h5>
+                                        <span style={chip}>{role.type}</span>
+                                        {role.current && (
+                                            <span style={{ ...chip, color: theme.accent, borderColor: 'transparent', backgroundColor: theme.accentMuted }}>
+                                                <span aria-hidden="true" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: theme.accent }} />
+                                                Current
+                                            </span>
+                                        )}
+                                    </div>
+                                    <MetaLine icon={Calendar} theme={theme}><span style={styles.mono}>{role.date}</span></MetaLine>
+                                </div>
+                                <p style={{ fontSize: '15px', lineHeight: 1.7, color: theme.textMuted, marginBottom: '14px', maxWidth: '760px' }}>{role.description}</p>
+                                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', margin: 0, padding: 0 }}>
+                                    {role.points.map((point) => (
+                                        <li key={point} style={{ position: 'relative', paddingLeft: '18px', fontSize: '14px', lineHeight: 1.6, color: theme.textMuted, maxWidth: '760px' }}>
+                                            <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: '10px', width: '8px', height: '2px', borderRadius: '1px', backgroundColor: theme.accent }} />
+                                            {point}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
+                    </ol>
+
+                    <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: `1px solid ${theme.border}`, display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        {axisExperience.tags.map((tag) => (<span key={tag} style={{ ...styles.tag, ...styles.mono, fontSize: '12px' }}>{tag}</span>))}
+                    </div>
+                </article>
+            </Reveal>
+
+            {/* Previous Technical Experience */}
+            <div style={subsection}>
+                <ExperienceSubheading icon={Wrench} title="Previous Technical Experience" theme={theme} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '20px' }}>
+                    {previousTechExperience.map((job, index) => (
+                        <Reveal key={job.org} delay={index * 100} style={{ display: 'flex' }}>
+                            <article className="exp-card" style={{ ...cardBase, padding: '24px', display: 'flex', flexDirection: 'column', width: '100%' }}>
+                                <h4 style={{ fontSize: '17px', fontWeight: 600, lineHeight: 1.3, marginBottom: '4px' }}>{job.title}</h4>
+                                <p style={{ fontSize: '14px', color: theme.text, marginBottom: '10px' }}>{job.org}</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', marginBottom: '14px' }}>
+                                    <MetaLine icon={MapPin} theme={theme}>{job.location}</MetaLine>
+                                    <MetaLine icon={Calendar} theme={theme}><span style={styles.mono}>{job.date}</span></MetaLine>
+                                </div>
+                                <p style={{ fontSize: '14px', lineHeight: 1.65, color: theme.textMuted, marginBottom: '18px', flex: 1 }}>{job.description}</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {job.tags.map((tag) => (<span key={tag} style={{ ...styles.tag, ...styles.mono, fontSize: '11px' }}>{tag}</span>))}
+                                </div>
+                            </article>
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+
+            {/* Education & Academic Achievements */}
+            <div style={subsection}>
+                <ExperienceSubheading icon={GraduationCap} title="Education & Academic Achievements" theme={theme} />
+                <Reveal>
+                    <article className="exp-card" style={{ ...cardBase, padding: 'clamp(24px, 3.5vw, 32px)', position: 'relative', cursor: 'pointer' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '24px', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                                <span aria-hidden="true" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '44px', height: '44px', borderRadius: '12px', backgroundColor: theme.accentMuted, color: theme.accent, flexShrink: 0 }}>
+                                    <GraduationCap size={22} />
+                                </span>
+                                <div>
+                                    <h4 style={{ fontSize: '20px', fontWeight: 600, lineHeight: 1.3, marginBottom: '4px' }}>
+                                        <a href={educationData.url} target="_blank" rel="noopener noreferrer" className="exp-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                                            {educationData.school}
+                                            <ExternalLink size={16} aria-hidden="true" className="exp-link-icon" style={{ color: theme.accent }} />
+                                            <span style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>(opens in a new tab)</span>
+                                        </a>
+                                    </h4>
+                                    <p style={{ fontSize: '15px', color: theme.text, marginBottom: '12px' }}>{educationData.degree}</p>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px' }}>
+                                        <MetaLine icon={MapPin} theme={theme}>{educationData.location}</MetaLine>
+                                        <MetaLine icon={Calendar} theme={theme}><span style={styles.mono}>{educationData.date}</span></MetaLine>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ padding: '18px 20px', borderRadius: '12px', backgroundColor: theme.accentMuted, border: `1px solid ${darkMode ? 'rgba(59,130,246,0.25)' : 'rgba(59,130,246,0.2)'}` }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                                    <Award size={20} aria-hidden="true" style={{ color: theme.accent, flexShrink: 0 }} />
+                                    <span style={{ fontSize: '16px', fontWeight: 600, color: theme.text }}>{educationData.award.title}</span>
+                                    <span style={{ fontSize: '13px', fontWeight: 500, color: theme.accent }}>· {educationData.award.summary}</span>
+                                </div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {educationData.award.terms.map((term) => (
+                                        <span key={term} style={{ ...chip, backgroundColor: darkMode ? 'rgba(10,10,11,0.6)' : '#ffffff', color: theme.text }}>{term}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </Reveal>
+            </div>
+
+            {/* Other Work Experience */}
+            <div style={subsection}>
+                <ExperienceSubheading icon={Users} title="Other Work Experience" theme={theme} />
+                <Reveal>
+                    <div className="exp-card exp-card-flat" style={{ ...cardBase, boxShadow: 'none', '--exp-hover-shadow': 'none', backgroundColor: darkMode ? 'rgba(15,15,17,0.6)' : 'rgba(255,255,255,0.7)', borderRadius: '14px' }}>
+                        {otherWorkExperience.map((job, index) => (
+                            <article key={job.org} style={{ padding: '18px 24px', borderTop: index === 0 ? 'none' : `1px solid ${theme.border}` }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '4px 16px', marginBottom: '6px' }}>
+                                    <h4 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>
+                                        {job.title} <span style={{ fontWeight: 400, color: theme.textMuted }}>· {job.org}</span>
+                                    </h4>
+                                    <span style={{ ...styles.mono, fontSize: '12px', color: theme.textMuted }}>{job.date}</span>
+                                </div>
+                                <p style={{ fontSize: '12px', color: theme.textMuted, marginBottom: '6px' }}>{job.location}</p>
+                                <p style={{ fontSize: '14px', lineHeight: 1.6, color: theme.textMuted, margin: 0 }}>{job.description}</p>
+                            </article>
+                        ))}
+                    </div>
+                </Reveal>
+            </div>
+        </div>
     );
 }
 
