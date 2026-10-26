@@ -6,152 +6,116 @@ import { Moon, Sun, Mail, Linkedin, Github, ExternalLink, ChevronDown, Download,
 // ============================================
 
 // Project Data
+// Content below was reviewed against each project's source code. Order sets the showcase layout:
+// the first project (featured) gets the large card, the rest share the row beneath it.
 const projectsData = [
     {
-        id: 'interntracker',
-        title: 'InternTracker',
+        id: 'interntracker', // kept from the original "InternTracker" name so existing #project/interntracker links keep working
+        title: 'InternTrack',
         subtitle: 'Full-Stack Web Application',
-        tagline: 'Track applications. Match resumes. Land internships.',
-        description: 'A full-stack web app that helps students track internship applications and analyze how well their resume matches job descriptions using keyword matching.',
+        featured: true,
+        description: 'A web application for managing job applications, tracking progress, and comparing résumés with job descriptions to identify relevant skills and keywords.',
+        cardTech: ['React', 'Firebase', 'Tailwind CSS', 'Vite', 'Vercel'],
+        highlights: [
+            'Authentication and user-specific application tracking',
+            'Application management with search and filtering',
+            'Interactive dashboard with application statistics',
+            'Résumé–job description keyword matching',
+            'Responsive interface for desktop and mobile',
+        ],
         thumbnail: '/images/InternTrack/dashboard-filled.png',
+        imageSize: { width: 2043, height: 1172 },
         images: [
-            { src: '/images/InternTrack/dashboard-filled.png', caption: 'Dashboard with real-time statistics' },
-            { src: '/images/InternTrack/tracker-list.png', caption: 'Application tracker with search & filters' },
-            { src: '/images/InternTrack/resume-matcher.png', caption: 'Resume-job description keyword matcher' },
+            { src: '/images/InternTrack/dashboard-filled.png', caption: 'Dashboard with application statistics and status breakdown' },
+            { src: '/images/InternTrack/tracker-list.png', caption: 'Application tracker with search and status filters' },
+            { src: '/images/InternTrack/resume-matcher.png', caption: 'Résumé–job description keyword matcher' },
         ],
-        overview: 'InternTracker is a productivity tool I built to solve my own pain point: managing dozens of internship applications across spreadsheets and email threads. It combines application tracking with a resume keyword matcher that shows how well your resume aligns with job descriptions.',
-        problem: "As a student applying to dozens of internships, I found it overwhelming to track applications across multiple spreadsheets and email threads. I also had no easy way to know if my resume actually matched what companies were looking for, leading to wasted applications on roles I wasn't qualified for.",
-        solution: 'I built InternTracker — a centralized dashboard where students can log applications, track their status, and use a built-in resume matcher that compares their resume against job descriptions. The matcher extracts keywords and shows a match percentage, highlighting both matched and missing skills so you can tailor your resume before applying.',
-        techStack: ['React 18', 'Vite', 'Tailwind CSS', 'Firebase Auth', 'Cloud Firestore', 'Vercel', 'pdf.js', 'Lucide Icons'],
-        techReasoning: 'I chose React + Vite for fast development and instant hot reload. Tailwind CSS let me build a clean, responsive UI quickly without writing custom CSS files. Firebase was ideal for authentication and real-time database without managing a backend server — perfect for a solo project. Vercel made deployment seamless with environment variable support for secure API keys.',
+        overview: 'InternTrack keeps job applications in one place. Each user gets a private dashboard to log applications, follow their status, and compare a résumé against a job description to see which keywords match and which are missing.',
+        problem: "Tracking applications across spreadsheets, notes, and email threads makes it easy to lose track of where each one stands. It's also hard to tell how closely a résumé lines up with a specific job description before applying. I built InternTrack to replace the spreadsheet I was using for my own applications.",
+        solution: "A React single-page app backed by Firebase. Firebase Authentication handles sign-in, and each user's applications are stored under their own Firestore path, with real-time listeners keeping the dashboard and tracker up to date. The résumé matcher extracts text from an uploaded PDF using pdf.js, pulls keywords from both documents, and reports a match score with matched and missing keywords.",
+        techStack: ['React 18', 'Vite', 'Tailwind CSS', 'React Router', 'Firebase Auth', 'Cloud Firestore', 'pdf.js', 'Vercel'],
+        decisions: [
+            { title: 'React + Vite', content: 'Component-based UI with a fast dev server and hot reload, which kept iteration quick while building and restyling pages.' },
+            { title: 'Firebase instead of a custom backend', content: 'Authentication and a real-time database without running a server. For a solo project, that meant more time on the product and less on infrastructure.' },
+            { title: 'Per-user Firestore paths', content: "Applications are stored under users/{uid}/applications, so every read and write is scoped to the signed-in user's own data." },
+            { title: 'Transparent keyword matching', content: 'The match score is the share of job-description keywords that also appear in the résumé. It is intentionally simple: users can see exactly which keywords matched and which are missing, instead of trusting an opaque score.' },
+            { title: 'Tailwind CSS + Vercel', content: 'Tailwind made the responsive layout fast to build without separate stylesheets, and Vercel handled deployment with environment variables for the Firebase configuration.' },
+        ],
         features: [
-            'Secure email/password authentication with user-specific data isolation',
-            'Full CRUD operations: add, edit, delete internship applications',
-            'Search and filter applications by company, role, and status',
-            'Dashboard with real-time application statistics and status breakdown',
-            'Resume–job description matcher showing match score, matched keywords, and missing keywords',
-            'Responsive design that works on desktop and mobile',
+            'Email/password authentication with protected routes',
+            'Add, edit, and delete applications',
+            'Search by company or role, and filter by status (Applied, OA, Interview, Rejected, Offer)',
+            'Dashboard with application counts and status breakdown',
+            'Résumé matcher showing a match score, matched keywords, and missing keywords',
+            'PDF résumé upload with text extraction via pdf.js',
+            'Real-time updates using Firestore listeners',
+            'Light and dark themes with a responsive layout',
         ],
-        challenges: 'The biggest challenge was designing a Firestore data model that kept user data isolated and secure. I learned to write security rules that only allow users to read/write their own documents. Managing global auth state with React Context took iteration to get right, especially handling loading states and redirects.',
-        improvements: "I'd add OAuth login (Google/GitHub) for easier signup, implement drag-and-drop to reorder applications by priority, and add email reminders for follow-ups. The resume matcher could be smarter with NLP instead of simple keyword matching.",
+        challenges: [
+            { title: 'Keeping user data isolated', content: "Designing the Firestore data model around the signed-in user was the main challenge. Nesting applications under each user's document scopes every query to that user and keeps the data model simple." },
+            { title: 'Authentication state', content: "Managing auth state with React Context took iteration — particularly loading states, so protected pages don't flash or redirect before Firebase has restored the session." },
+        ],
+        learned: [
+            'Structuring Firestore data around per-user paths',
+            'Managing global authentication state with React Context',
+            'Handling real-time updates with Firestore onSnapshot listeners',
+            'Deploying a Vite + Firebase app on Vercel with environment variables',
+        ],
+        futureImprovements: [
+            'OAuth sign-in with Google or GitHub',
+            'Drag-and-drop ordering of applications by priority',
+            'Email reminders for follow-ups',
+            'Smarter matching that handles synonyms and related terms, not just exact keywords',
+        ],
         github: 'https://github.com/AbeedMulla/interntrack',
         live: 'https://interntrack-henna.vercel.app',
-        metrics: 'Built and deployed in 2 weeks. Currently using it to track my own 30+ internship applications for Summer 2026.',
-        learned: [
-            'Designing Firestore data models with user-level security rules',
-            'Managing global authentication state using React Context',
-            'Handling real-time updates with Firestore onSnapshot listeners',
-            'Deploying Vite + Firebase apps securely with environment variables on Vercel',
-        ],
-    },
-    {
-        id: 'studenthub',
-        title: 'StudentHub',
-        subtitle: 'Android Application',
-        tagline: 'An Android app to manage classes, assignments, and focus time with smart reminders and offline support.',
-        description: 'A context-aware student assistant that adapts to your schedule and location, helping you stay organized with smart notifications and offline-first design.',
-        thumbnail: '/images/StudentHub/Dashboard_filled.png',
-        isMobileApp: true, // Flag for mobile app screenshots (portrait orientation)
-        images: [
-            { src: '/images/StudentHub/Dashboard_filled.png', caption: 'Dashboard with daily overview and quick actions' },
-            { src: '/images/StudentHub/schedule_week.png', caption: 'Weekly schedule view with class times' },
-            { src: '/images/StudentHub/assignments_list.png', caption: 'Assignment tracker with priorities and due dates' },
-            { src: '/images/StudentHub/focus_running.png', caption: 'Pomodoro focus mode with session tracking' },
-            { src: '/images/StudentHub/settings_notifications.png', caption: 'Settings with quiet hours and notification preferences' },
-        ],
-        overview: 'StudentHub is an Android application I built to help students manage their academic life more effectively. It combines class scheduling, assignment tracking, and a Pomodoro-style focus mode — all with smart notifications that respect quiet hours and adapt based on your location and schedule.',
-        problem: "Students juggle multiple classes, assignments, and deadlines while trying to maintain focus and avoid burnout. Existing apps either do one thing well (calendar, to-do list, timer) but don't integrate. Notifications become noise, and when you're offline — like in a lecture hall with poor signal — apps that rely on cloud sync become useless.",
-        solution: "I built StudentHub as an all-in-one academic companion. It stores everything locally first (Room database) and syncs to Firebase when online. Smart notifications know when you're in class (geofencing) and respect quiet hours. The Pomodoro timer helps maintain focus with configurable work/break intervals. Everything works offline, syncing seamlessly when connectivity returns.",
-        techStack: ['Java', 'Android SDK', 'Material Design 3', 'Room (SQLite)', 'Firebase Auth', 'Cloud Firestore', 'Geofencing API', 'WorkManager'],
-        techReasoning: "I chose Java over Kotlin for deeper Android fundamentals understanding. MVVM with Repository pattern keeps the codebase maintainable and testable. Room provides reliable offline storage with compile-time SQL verification. Firebase handles auth and cloud sync without building a custom backend. WorkManager ensures background tasks run reliably even with Android's battery restrictions.",
-        features: [
-            'Firebase Authentication with email/password and secure session management',
-            'Dashboard showing today\'s classes, upcoming assignments, and focus stats',
-            'Weekly and daily schedule views with color-coded classes',
-            'Assignment tracking with priority levels, due dates, and completion status',
-            'Pomodoro focus mode with customizable work/break durations',
-            'Smart notifications with quiet hours (e.g., during classes or sleep)',
-            'Offline-first design: full functionality without internet, syncs when online',
-            'Geofencing to detect when you arrive at campus or leave',
-        ],
-        challenges: "The hardest challenge was handling offline-to-online sync without data conflicts. I implemented a last-write-wins strategy with timestamps, but edge cases (like editing the same assignment on two devices offline) required careful conflict resolution. Android's background execution limits also meant I had to use WorkManager carefully to avoid battery drain while keeping data fresh.",
-        improvements: "I'd add widget support for quick glances at today's schedule, implement collaborative features for study groups, and add AI-powered study recommendations based on upcoming deadlines and past focus patterns. A calendar sync with Google Calendar would also be valuable.",
-        github: 'https://github.com/AbeedMulla/StudentHub',
-        live: null,
-        metrics: 'Developed over 4 weeks. Implements 8+ Android architecture components. Handles offline/online transitions gracefully with conflict resolution.',
-        learned: [
-            'Android MVVM architecture with Repository pattern',
-            'Offline-first design with Room and Firestore sync strategies',
-            'Background task management with WorkManager and Foreground Services',
-            'Geofencing and location-based triggers with Google Play Services',
-            'Battery-efficient notification scheduling that respects user preferences',
-        ],
-        // Extended content for detailed case study
-        architectureDetails: {
-            layers: [
-                { name: 'UI Layer', description: 'Activities, Fragments, and XML layouts following Material Design 3 guidelines' },
-                { name: 'ViewModel', description: 'Holds UI state, survives configuration changes, exposes data via LiveData' },
-                { name: 'Repository', description: 'Single source of truth that coordinates between local Room DB and remote Firestore' },
-                { name: 'Data Sources', description: 'Room DAOs for local persistence, Firestore for cloud backup and cross-device sync' },
-            ],
-        },
-        technicalInsights: [
-            {
-                title: 'Offline-First Sync Strategy',
-                content: 'All writes go to Room first, then sync to Firestore via WorkManager. Each record has a `lastModified` timestamp and `syncStatus` flag. On conflict, the most recent write wins, but I preserve both versions in a conflict log for manual resolution if needed.',
-            },
-            {
-                title: 'Notification Spam Prevention',
-                content: 'Instead of firing notifications for every event, I batch them and use a priority queue. Quiet hours are respected (stored in SharedPreferences), and geofencing triggers adjust notification urgency — e.g., assignment reminders are more aggressive when you\'re at home vs. in class.',
-            },
-            {
-                title: 'Battery-Efficient Background Work',
-                content: 'WorkManager handles periodic syncs with exponential backoff on failure. Geofencing uses the fused location provider with minimal battery impact. Foreground services are only used during active Pomodoro sessions with a persistent notification.',
-            },
-        ],
     },
     {
         id: 'http-server',
         title: 'Custom HTTP Server & Reverse Proxy',
-        subtitle: 'Systems Programming',
-        tagline: 'A from-scratch HTTP server and reverse proxy built using raw TCP sockets.',
-        description: 'A deep dive into networking fundamentals: parsing HTTP by hand, routing requests, load balancing across backends, and understanding what happens at the byte level.',
+        subtitle: 'Backend & Networking',
+        description: 'Built an HTTP server and reverse proxy using raw TCP sockets, with request parsing, routing, health checks, and round-robin load balancing.',
+        cardTech: ['Node.js', 'TCP Sockets', 'HTTP', 'Networking'],
+        highlights: [
+            'Low-level TCP socket programming',
+            'Manual HTTP request and response handling',
+            'Reverse proxy routing',
+            'Round-robin load balancing across three backend servers',
+            'Backend health checks and error handling',
+        ],
         thumbnail: '/images/http-server-proxy/server-startup.png',
+        cardImage: '/images/http-server-proxy/load-balancing.png',
+        cardImageSize: { width: 1702, height: 1374 },
         isTerminalScreenshot: true, // Flag for terminal/CLI screenshots
         images: [
-            { src: '/images/http-server-proxy/server-startup.png', caption: 'Server startup showing proxy listening on port 8080 with 3 backend servers' },
-            { src: '/images/http-server-proxy/load-balancing.png', caption: 'Round-robin load balancing distributing requests across backends 3001, 3002, 3003' },
-            { src: '/images/http-server-proxy/request-logging.png', caption: 'Request logging with automatic failover when backend 3001 is unavailable' },
-            { src: '/images/http-server-proxy/health-check.png', caption: 'Health check endpoint showing backend status and failure counts' },
+            { src: '/images/http-server-proxy/server-startup.png', caption: 'Server startup showing the proxy listening on port 8080 with three backend servers' },
+            { src: '/images/http-server-proxy/load-balancing.png', caption: 'Round-robin load balancing distributing requests across backends 3001, 3002, and 3003' },
+            { src: '/images/http-server-proxy/request-logging.png', caption: 'Request logging with a retry on another backend when 3001 is unavailable' },
+            { src: '/images/http-server-proxy/health-check.png', caption: 'Health endpoint showing backend status and failure counts' },
         ],
-        overview: 'This project was born from wanting to understand HTTP at the deepest level. No Express, no http module — just raw TCP sockets and manual parsing. I built an HTTP/1.1 compliant server, then extended it into a reverse proxy with load balancing and health checks.',
-        problem: "Most developers use HTTP every day but never see what happens beneath frameworks like Express or Flask. I wanted to understand: How does a server parse raw bytes into headers and body? How does a reverse proxy route requests? How do load balancers distribute traffic? Building from scratch was the only way to truly learn.",
-        solution: "I built a complete HTTP server using Node.js's `net` module (raw TCP sockets). The server manually parses HTTP requests from byte streams, handles routing, and sends properly formatted responses. I then built a reverse proxy layer that forwards requests to backend servers using round-robin load balancing, with health checks to detect and remove failed backends.",
-        techStack: ['Node.js', 'TCP Sockets (net module)', 'HTTP/1.1 Protocol', 'Round-Robin Load Balancing'],
-        techReasoning: "Node.js was chosen because its `net` module provides low-level TCP access while still being approachable. No external libraries were used — the entire HTTP parsing, routing, and proxying logic is hand-written to maximize learning. This could be ported to C or Rust for even lower-level understanding, but Node.js hit the sweet spot of accessible yet educational.",
+        overview: "A from-scratch HTTP server and reverse proxy built on Node.js's net module — no Express and no http module. It reads raw bytes from TCP sockets, parses them into HTTP requests, and either responds directly or forwards the request to one of three backend servers.",
+        problem: "Most developers use HTTP every day without seeing what happens beneath frameworks like Express or Flask. I wanted to understand it properly: how a server turns raw bytes into headers and a body, how a reverse proxy routes requests, and how a load balancer spreads traffic and copes with failing servers.",
+        solution: "The server buffers incoming TCP data until it has a complete request — headers ending in \\r\\n\\r\\n, plus Content-Length bytes of body — then parses it and passes it to a router. The proxy handles / and /health itself and forwards /api/* requests to a backend chosen by a round-robin load balancer. Failing backends are tracked and skipped, and a failed request is retried on the next backend before the proxy returns a 502 or 503.",
+        techStack: ['Node.js', 'net module (TCP)', 'HTTP/1.1', 'Round-Robin Load Balancing'],
+        decisions: [
+            { title: 'Raw TCP with the net module', content: "Node's net module gives direct access to TCP sockets while staying approachable. Everything above the socket — parsing, routing, proxying — is hand-written." },
+            { title: 'No external dependencies', content: 'The server, proxy, and load balancer use only Node built-ins, and the unit tests are plain Node scripts. Nothing is hidden behind a library.' },
+            { title: 'One request per connection', content: 'Responses are sent with Connection: close and the socket is closed afterwards. This keeps request framing simple, at the cost of connection reuse — keep-alive is on the improvement list.' },
+            { title: 'Passive health tracking', content: 'Instead of polling backends, failures are recorded during real requests. A backend is marked unhealthy after 3 consecutive failures and given another chance after 30 seconds.' },
+            { title: 'Round-robin selection', content: 'Simple and stateless: each request goes to the next healthy backend in order. It assumes backends have equal capacity, which is a reasonable starting point for identical local servers.' },
+        ],
         features: [
-            'Manual HTTP/1.1 request parsing from raw TCP byte streams',
-            'Support for GET, POST, PUT, DELETE methods',
-            'Header parsing with case-insensitive matching',
-            'Content-Length body handling',
-            'Reverse proxy with configurable backend targets',
-            'Round-robin load balancing across multiple backends',
-            'Health check pings to detect backend failures',
-            'Request logging with timing metrics',
+            'HTTP request parsing from raw TCP byte streams',
+            'Request buffering until headers and the Content-Length body are complete',
+            'Case-insensitive header parsing and query-string parsing',
+            'Local routes (/ and /health) alongside proxied /api/* routes',
+            'Round-robin load balancing across three configurable backends',
+            'Passive health tracking with automatic recovery after 30 seconds',
+            'Retry on the next backend, with 502/503 responses when backends fail',
+            'Backend (5 s) and idle-client (30 s) socket timeouts',
+            'Colour-coded request logging with response times',
+            'Unit tests for the HTTP parser and load balancer',
         ],
-        challenges: "The trickiest part was handling TCP's streaming nature. Data arrives in chunks — a single HTTP request might come in 3 packets, or 5 requests might arrive in 1 packet. I had to implement a buffer that accumulates data until a complete request is detected (headers end with \\r\\n\\r\\n, then read Content-Length bytes for the body). Edge cases like partial headers or slow clients required careful timeout handling.",
-        improvements: "Next steps would be implementing HTTP keep-alive for connection reuse, HTTPS with TLS termination, weighted load balancing based on backend capacity, and response caching for static content. WebSocket upgrade support would also be a valuable addition.",
-        github: 'https://github.com/AbeedMulla/http-server-proxy',
-        live: null,
-        metrics: 'Handles 1000+ requests/second in benchmarks. Zero external dependencies for core HTTP parsing. Full HTTP/1.1 compliance for common methods.',
-        learned: [
-            'TCP is a stream protocol — messages aren\'t automatically delimited',
-            'HTTP is plain text, making it debuggable but requiring careful parsing',
-            'Load balancers need health checks to avoid sending traffic to dead backends',
-            'Error handling in network code is critical — connections drop, timeouts happen',
-            'Buffering strategies matter for performance and correctness',
-        ],
-        // Extended content for detailed case study
         httpExplanation: {
             title: 'How HTTP Works (At the Byte Level)',
             content: `HTTP is a plain-text protocol running over TCP. When your browser requests a page, it sends something like:
@@ -169,65 +133,169 @@ Content-Length: 1234\\r\\n
 \\r\\n
 <html>...</html>
 
-My server does all of this manually — reading bytes, finding the header boundary, parsing each line, and constructing the response byte-by-byte.`,
+My server does all of this manually — reading bytes, finding the header boundary, parsing each line, and building the response as text.`,
         },
         architectureDiagram: {
-            title: 'Request Flow Architecture',
+            title: 'Request Flow',
             steps: [
-                { step: 1, label: 'Client', description: 'Browser sends HTTP request to proxy' },
-                { step: 2, label: 'Reverse Proxy', description: 'Parses request, selects backend via load balancer' },
-                { step: 3, label: 'Load Balancer', description: 'Round-robin selection from healthy backends' },
-                { step: 4, label: 'Backend Server', description: 'Processes request, sends response' },
-                { step: 5, label: 'Proxy → Client', description: 'Forwards response back to client' },
+                { step: 1, label: 'Client', description: 'Sends an HTTP request to the proxy on port 8080' },
+                { step: 2, label: 'Reverse Proxy', description: 'Parses the request; the router decides whether to handle it locally or forward it' },
+                { step: 3, label: 'Load Balancer', description: 'Picks the next healthy backend using round-robin' },
+                { step: 4, label: 'Backend Server', description: 'Processes the request and sends a response' },
+                { step: 5, label: 'Proxy → Client', description: 'Forwards the response back to the client and closes the connection' },
             ],
         },
         codeExamples: [
             {
-                title: 'Starting the Server',
-                code: `# Start 3 backend servers on different ports
-node backend.js 3001 &
-node backend.js 3002 &
-node backend.js 3003 &
+                title: 'Starting the servers',
+                code: `# Start three backend servers (one per terminal)
+node backends/simple-backend.js 3001
+node backends/simple-backend.js 3002
+node backends/simple-backend.js 3003
 
-# Start the reverse proxy on port 8080
-node proxy.js 8080`,
+# Start the reverse proxy (listens on port 8080)
+node src/server.js`,
             },
             {
                 title: 'Testing with curl',
-                code: `# Simple GET request
+                code: `# Routes handled by the proxy itself
+curl http://localhost:8080/
+curl http://localhost:8080/health
+
+# Proxied to a backend
 curl http://localhost:8080/api/users
 
-# POST with JSON body
-curl -X POST http://localhost:8080/api/users \\
+# POST with a JSON body
+curl -X POST http://localhost:8080/api/echo \\
   -H "Content-Type: application/json" \\
   -d '{"name": "Abeed"}'
 
-# Watch load balancing in action
-for i in {1..10}; do curl -s http://localhost:8080/ping; done`,
+# Watch round-robin load balancing
+for i in {1..6}; do curl -s http://localhost:8080/api/data; echo; done`,
+            },
+            {
+                title: 'Running the unit tests',
+                code: `npm test`,
             },
         ],
-        technicalInsights: [
+        challenges: [
             {
-                title: 'TCP is a Stream, Not Messages',
-                content: "Unlike UDP, TCP doesn't preserve message boundaries. If you send two HTTP requests quickly, they might arrive as one chunk. Or one request might arrive in 10 pieces. The server must buffer incoming data and scan for the header terminator (\\r\\n\\r\\n) before parsing.",
+                title: 'TCP is a stream, not messages',
+                content: "TCP doesn't preserve message boundaries. One HTTP request can arrive across several data events, so the server accumulates chunks in a buffer and only parses once it has seen the header terminator (\\r\\n\\r\\n) and the full Content-Length body. Idle connections are closed after 30 seconds.",
             },
             {
-                title: 'Error Handling is Non-Negotiable',
-                content: "Network programming is hostile. Connections drop mid-request. Backends crash. Clients send malformed data. Every socket operation needs timeout handling, and the server must gracefully handle partial data without crashing.",
+                title: 'Handling backend failures',
+                content: 'Backends can refuse connections, time out, or close early. The proxy applies a 5-second backend timeout, records each failure against that backend, and retries on the next one before returning a 502 or 503 to the client.',
             },
             {
-                title: 'Round-Robin Trade-offs',
-                content: "Round-robin is simple but naive — it assumes all backends have equal capacity. A better approach would be least-connections (route to the backend with fewest active requests) or weighted distribution based on server specs.",
+                title: 'Round-robin trade-offs',
+                content: 'Round-robin is simple but naive — it assumes all backends have equal capacity. A better approach for uneven servers would be least-connections (route to the backend with the fewest active requests) or weighted distribution.',
             },
+        ],
+        learned: [
+            "TCP is a stream protocol — messages aren't automatically delimited",
+            'HTTP is plain text, which makes it debuggable but requires careful parsing',
+            'Load balancers need health tracking to avoid sending traffic to dead backends',
+            'Error handling in network code is critical — connections drop and timeouts happen',
+            'Buffering strategies matter for both performance and correctness',
         ],
         futureImprovements: [
-            'HTTP Keep-Alive for connection reuse (major performance gain)',
+            'HTTP keep-alive for connection reuse',
+            'Chunked transfer encoding support',
             'HTTPS support with TLS termination at the proxy',
-            'Weighted load balancing based on backend capacity',
+            'Active health-check probes and weighted load balancing',
             'Response caching for static content',
-            'WebSocket upgrade support',
             'Graceful shutdown with connection draining',
         ],
+        github: 'https://github.com/AbeedMulla/http-server-proxy',
+        live: null,
+    },
+    {
+        id: 'studenthub',
+        title: 'StudentHub',
+        subtitle: 'Android Application',
+        description: 'An Android application that helps students manage classes, assignments, and focus sessions, with offline data storage and cloud sync.',
+        cardTech: ['Java', 'Android', 'Firebase', 'Room', 'LiveData'],
+        highlights: [
+            'Native Android app written in Java',
+            'Repository pattern with Room DAOs exposing LiveData to the UI',
+            'Offline-first storage in Room (SQLite) with Firestore sync',
+            'Firebase Authentication with per-user cloud data',
+            'Class scheduling and assignment tracking with priorities and due dates',
+            'Pomodoro focus mode running in a foreground service',
+        ],
+        thumbnail: '/images/StudentHub/Dashboard_filled.png',
+        cardImages: [
+            '/images/StudentHub/assignments_list.png',
+            '/images/StudentHub/Dashboard_filled.png',
+            '/images/StudentHub/focus_running.png',
+        ],
+        isMobileApp: true, // Flag for mobile app screenshots (portrait orientation)
+        images: [
+            { src: '/images/StudentHub/Dashboard_filled.png', caption: "Dashboard with the next class, upcoming assignments, and today's tasks" },
+            { src: '/images/StudentHub/schedule_week.png', caption: 'Weekly schedule view with class times' },
+            { src: '/images/StudentHub/assignments_list.png', caption: 'Assignment tracker with priorities and due dates' },
+            { src: '/images/StudentHub/focus_running.png', caption: 'Pomodoro focus mode with session tracking' },
+            { src: '/images/StudentHub/settings_notifications.png', caption: 'Settings with notification and quiet-hours preferences' },
+        ],
+        overview: 'StudentHub is an Android app for managing academic life: class schedules, assignments, daily tasks, and a Pomodoro-style focus timer. Data is stored on the device first, so the app keeps working without a connection, and syncs to Firebase when one is available.',
+        problem: "Students juggle classes, assignments, and deadlines while trying to stay focused. Most apps handle only one piece — a calendar, a to-do list, or a timer — and apps that depend on a connection become frustrating in places with poor signal, like lecture halls.",
+        solution: 'Every write goes to a local Room database first, and a repository layer syncs changes with Cloud Firestore on app launch and on manual refresh. Each record carries an updatedAt timestamp, a synced flag, and a soft-delete flag, so the app knows what to push and resolves conflicts with a last-write-wins rule. The focus timer runs in a foreground service so it keeps going when the app is in the background.',
+        techStack: ['Java', 'Android SDK', 'Material Components', 'Room (SQLite)', 'LiveData', 'Firebase Auth', 'Cloud Firestore', 'Foreground Service'],
+        decisions: [
+            { title: 'Java for Android fundamentals', content: 'I chose Java over Kotlin to build a solid understanding of the core Android APIs and lifecycle.' },
+            { title: 'Repository as the single source of truth', content: 'A DataRepository coordinates between Room and Firestore, so the UI never talks to the network directly and always reads from local data.' },
+            { title: 'Room for local storage', content: 'Room gives compile-time-checked SQL queries and returns LiveData, so screens update automatically when the underlying data changes.' },
+            { title: 'Firebase for auth and sync', content: 'Firebase Authentication and Cloud Firestore handle accounts and cloud backup without building a custom backend.' },
+            { title: 'Foreground service for the timer', content: "Android limits background work, so the Pomodoro timer runs as a foreground service with a persistent notification rather than relying on the app staying open." },
+        ],
+        features: [
+            'Firebase Authentication with email and password',
+            "Dashboard with the next class, upcoming assignments, a focus shortcut, and today's tasks",
+            'Today and week schedule views',
+            'Assignment tracking with priority levels, due dates, and completion status',
+            'Pomodoro focus mode with configurable work, break, and long-break durations',
+            'Offline-first storage with Firestore sync on launch and manual refresh',
+            'Connectivity monitoring to detect when the device is online',
+            'Settings for theme, focus durations, and notification preferences',
+        ],
+        architectureDetails: {
+            layers: [
+                { name: 'UI Layer', description: 'Activities and Fragments with Material Components that observe LiveData from the repository' },
+                { name: 'Repository', description: 'DataRepository — the single source of truth that coordinates local Room data and remote Firestore sync' },
+                { name: 'Local Data', description: 'Room entities and DAOs for classes, assignments, and tasks, exposing LiveData queries' },
+                { name: 'Remote Data', description: 'FirestoreManager for per-user cloud storage, used to push local changes and pull remote updates' },
+            ],
+        },
+        challenges: [
+            {
+                title: 'Offline-first sync',
+                content: 'All writes go to Room first and are marked unsynced. When the app syncs, it pushes local changes and then pulls remote data, keeping whichever version has the newer updatedAt timestamp (last write wins).',
+            },
+            {
+                title: 'Deletes that sync correctly',
+                content: "If a record is removed locally before it syncs, the cloud copy would simply come back on the next pull. Records are therefore soft-deleted with a deleted flag, so the deletion itself is synced.",
+            },
+            {
+                title: 'Keeping the focus timer alive',
+                content: "Android's background execution limits can stop work when the user leaves the app. Running the timer in a foreground service with an ongoing notification keeps sessions accurate and visible.",
+            },
+        ],
+        learned: [
+            'Structuring an Android app around a repository with Room and LiveData',
+            'Designing offline-first sync with timestamps, sync flags, and soft deletes',
+            'Using foreground services for long-running user-visible work',
+            "Working within Android's lifecycle and background execution limits",
+        ],
+        futureImprovements: [
+            'Complete location-based Home/Campus modes (the geofence receiver exists; registration is still to do)',
+            'Scheduled assignment reminders with WorkManager that respect quiet hours',
+            'ViewModels between the UI and repository for a full MVVM architecture',
+            'Home-screen widget for a quick view of today',
+            'Google Calendar sync',
+        ],
+        github: 'https://github.com/AbeedMulla/StudentHub',
+        live: null,
     },
 ];
 
@@ -361,6 +429,15 @@ const navLinks = [
     { label: 'Experience', href: '#experience' },
     { label: 'Projects', href: '#projects' },
     { label: 'Contact', href: '#contact' },
+];
+
+const RESUME_URL = '/resume.pdf';
+const RESUME_FILENAME = 'Abeed_Mulla_Resume.pdf';
+
+const contactLinks = [
+    { label: 'GitHub', value: 'AbeedMulla', href: 'https://github.com/AbeedMulla', icon: Github, external: true },
+    { label: 'LinkedIn', value: 'abeed-mulla', href: 'https://www.linkedin.com/in/abeed-mulla', icon: Linkedin, external: true },
+    { label: 'Email', value: 'abeedmulla10@gmail.com', href: 'mailto:abeedmulla10@gmail.com', icon: Mail },
 ];
 
 // ============================================
@@ -1366,6 +1443,38 @@ function MainPortfolio() {
         @media (max-width: 640px) { .skills-grid { grid-template-columns: minmax(0, 1fr); } }
         .skill-tag { transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease; }
         .skill-tag:hover { border-color: var(--skill-tag-hover) !important; color: var(--skill-tag-hover-text) !important; }
+        .project-featured { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+        .projects-secondary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+        .project-media img { transition: transform 0.5s ease; }
+        .project-card:hover .project-media img { transform: scale(1.02); }
+        .project-stretch::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 20px; }
+        .project-stretch:focus-visible { outline: none; }
+        .project-stretch:focus-visible::after { outline: 2px solid #3b82f6; outline-offset: -2px; }
+        .project-card:hover .project-stretch { background-color: #2563eb !important; }
+        .project-action-secondary:hover { border-color: var(--action-hover-border) !important; color: var(--action-hover-border) !important; }
+        .project-action-secondary:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+        @media (max-width: 900px) {
+          .project-featured { grid-template-columns: minmax(0, 1fr); }
+          .project-featured-media { padding: 16px 16px 0 !important; }
+        }
+        @media (max-width: 768px) { .projects-secondary-grid { grid-template-columns: minmax(0, 1fr); } }
+        @media (max-width: 560px) { .featured-thumbs-row { display: none !important; } }
+        @media (prefers-reduced-motion: reduce) {
+          .project-media img, .project-card:hover .project-media img { transition: none !important; transform: none !important; }
+        }
+        @media (max-width: 1199px) {
+          /* Not enough room beside the description: sit centred below the contact links instead */
+          .contact-robot-wrapper { position: relative !important; top: auto !important; bottom: auto !important; right: auto !important; width: fit-content; margin: 120px auto 0; }
+          .contact-robot-wrapper .contact-bubble { right: auto !important; left: 50% !important; translate: -50% 0; }
+        }
+        .contact-links { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; max-width: 820px; margin: 48px auto 0; padding: 0; }
+        @media (max-width: 768px) { .contact-links { grid-template-columns: minmax(0, 1fr); max-width: 420px; } }
+        @media (max-width: 480px) { .contact-ctas > * { width: 100%; justify-content: center; } }
+        .contact-cta { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease; }
+        .contact-cta-primary:hover { background-color: #2563eb !important; }
+        .contact-cta-secondary:hover { border-color: #3b82f6 !important; color: #3b82f6 !important; }
+        .contact-cta:focus-visible, .contact-link:focus-visible { outline: 2px solid #3b82f6; outline-offset: 3px; }
+        .contact-link:hover .contact-link-icon { color: #3b82f6 !important; }
         .exp-current-dot { animation: expPulse 2.4s ease-in-out infinite; }
         @keyframes expPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.45); } 50% { box-shadow: 0 0 0 5px rgba(59,130,246,0); } }
         @media (prefers-reduced-motion: reduce) {
@@ -1406,7 +1515,7 @@ function MainPortfolio() {
                             <a href="https://www.linkedin.com/in/abeed-mulla" target="_blank" rel="noopener noreferrer" style={{ ...styles.navLink, display: 'flex' }} aria-label="LinkedIn"><Linkedin size={18} /></a>
                             <button style={styles.themeToggle} onClick={() => setDarkMode(!darkMode)} aria-label="Toggle theme">{darkMode ? <Sun size={18} /> : <Moon size={18} />}</button>
                         </div>
-                        <button className="mobile-menu-btn" style={{ ...styles.themeToggle, display: 'none' }} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                        <button className="mobile-menu-btn" style={{ ...styles.themeToggle, display: 'none' }} onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileMenuOpen}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                 <span style={{ width: '18px', height: '2px', backgroundColor: theme.text }} />
                                 <span style={{ width: '18px', height: '2px', backgroundColor: theme.text }} />
@@ -1577,7 +1686,7 @@ function MainPortfolio() {
                         <p className="fade-in fade-in-delay-3" style={{ ...styles.paragraph, fontSize: 'clamp(16px, 1.4vw, 19px)', marginBottom: '44px', maxWidth: '680px' }}>I'm a Computer Science (Honours, Co-op) student at Dalhousie University, graduating in December 2026. Currently working as a Software Engineer Intern at AXIS Capital, I have hands-on experience developing production applications using React, TypeScript, .NET APIs, and SQL Server. I enjoy building reliable, user-focused software and am seeking full-time opportunities across software development after graduation.</p>
                         <div className="fade-in fade-in-delay-4" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                             <a href="#projects" style={{ ...styles.button, ...styles.buttonPrimary, padding: '14px 28px', fontSize: '15px' }} onClick={(e) => { e.preventDefault(); scrollToSection('#projects'); }}>View Projects <ArrowRight size={18} /></a>
-                            <a href="/resume.pdf" style={{ ...styles.button, ...styles.buttonSecondary, padding: '14px 28px', fontSize: '15px' }}><Download size={18} /> Download Resume</a>
+                            <a href={RESUME_URL} download={RESUME_FILENAME} style={{ ...styles.button, ...styles.buttonSecondary, padding: '14px 28px', fontSize: '15px' }}><Download size={18} /> Download Resume</a>
                         </div>
 
                         {/* Mobile Robot - below text, centered */}
@@ -1692,43 +1801,74 @@ function MainPortfolio() {
                     </div>
                 </section>
 
-                {/* Projects Section - Carousel */}
+                {/* Projects Section */}
                 <section id="projects" style={styles.section}>
                     <div style={styles.container}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '48px' }}>
                             <div>
-                                <p style={styles.sectionTitle}>Projects</p>
-                                <h2 style={{ ...styles.heading, marginBottom: '16px' }}>Featured Work</h2>
-                                <p style={{ ...styles.paragraph, marginBottom: 0 }}>Real projects solving real problems. Click View Project to explore the project's details.</p>
+                                <p style={styles.sectionTitle}>Selected Work</p>
+                                <h2 style={{ ...styles.heading, marginBottom: '16px' }}>Featured Projects</h2>
+                                <p style={{ ...styles.paragraph, marginBottom: 0 }}>A selection of applications and systems I've built, exploring different areas of software development.</p>
                             </div>
                             <a href="https://github.com/AbeedMulla" target="_blank" rel="noopener noreferrer" style={{ ...styles.button, ...styles.buttonSecondary, fontSize: '13px', padding: '10px 16px' }}><Github size={16} /> View GitHub</a>
                         </div>
+                        <ProjectsShowcase projects={projectsData} theme={theme} darkMode={darkMode} styles={styles} />
                     </div>
-                    <ProjectCarousel projects={projectsData} theme={theme} darkMode={darkMode} styles={styles} />
                 </section>
 
                 {/* Contact Section */}
                 <section id="contact" style={{ ...styles.section, backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.5)', backdropFilter: 'blur(8px)', position: 'relative', overflow: 'hidden' }}>
                     <div style={styles.container}>
-                        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-                            <p style={{ ...styles.sectionTitle, marginBottom: '16px' }}>Contact</p>
-                            <h2 style={{ ...styles.heading, marginBottom: '16px' }}>Let's Connect</h2>
-                            <p style={{ ...styles.paragraph, margin: '0 auto 32px', textAlign: 'center' }}>Open to <strong style={{ color: theme.text }}>Summer 2026 internships</strong> and new-grad opportunities.</p>
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
-                                <button
-                                    onClick={() => setContactModalOpen(true)}
-                                    style={{ ...styles.button, ...styles.buttonPrimary, cursor: 'pointer', border: 'none' }}
-                                >
-                                    <Mail size={16} /> Let's Connect
-                                </button>
-                                <a href="/resume.pdf" style={{ ...styles.button, ...styles.buttonSecondary }}><Download size={16} /> Download Resume</a>
+                        <Reveal>
+                            <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto' }}>
+                                <p style={{ ...styles.sectionTitle, marginBottom: '16px' }}>Get In Touch</p>
+                                <h2 style={{ ...styles.heading, fontSize: 'clamp(36px, 6vw, 56px)', marginBottom: '20px' }}>Let's Connect</h2>
+                                <p style={{ ...styles.paragraph, fontSize: 'clamp(16px, 1.4vw, 18px)', maxWidth: '620px', margin: '0 auto 36px', textAlign: 'center' }}>I'm exploring full-time opportunities in software development following my December 2026 graduation. Whether it's an opportunity, a project, or a conversation about technology, I'd be happy to connect.</p>
+                                <div className="contact-ctas" style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setContactModalOpen(true)}
+                                        className="contact-cta contact-cta-primary"
+                                        style={{ ...styles.button, ...styles.buttonPrimary, padding: '14px 28px', fontSize: '15px', fontFamily: 'inherit' }}
+                                    >
+                                        <Send size={17} aria-hidden="true" /> Send a Message
+                                    </button>
+                                    <a href={RESUME_URL} download={RESUME_FILENAME} className="contact-cta contact-cta-secondary" style={{ ...styles.button, ...styles.buttonSecondary, padding: '14px 28px', fontSize: '15px' }}>
+                                        <Download size={17} aria-hidden="true" /> Download Resume
+                                    </a>
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
-                                <a href="mailto:abeedmulla10@gmail.com" style={{ color: theme.textMuted }} aria-label="Email"><Mail size={22} /></a>
-                                <a href="https://www.linkedin.com/in/abeed-mulla" target="_blank" rel="noopener noreferrer" style={{ color: theme.textMuted }} aria-label="LinkedIn"><Linkedin size={22} /></a>
-                                <a href="https://github.com/AbeedMulla" target="_blank" rel="noopener noreferrer" style={{ color: theme.textMuted }} aria-label="GitHub"><Github size={22} /></a>
-                            </div>
-                        </div>
+                        </Reveal>
+                        <Reveal delay={100}>
+                            <ul className="contact-links" aria-label="Contact links">
+                                {contactLinks.map(({ label, value, href, icon: Icon, external }) => (
+                                    <li key={label} style={{ display: 'flex' }}>
+                                        <a
+                                            href={href}
+                                            className="exp-card contact-link"
+                                            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                            aria-label={external ? `${label}: ${value} (opens in a new tab)` : `${label}: ${value}`}
+                                            style={{
+                                                display: 'flex', alignItems: 'center', gap: '14px', width: '100%', padding: '16px 18px', textDecoration: 'none', color: theme.text,
+                                                backgroundColor: darkMode ? 'rgba(15,15,17,0.85)' : 'rgba(255,255,255,0.95)',
+                                                border: `1px solid ${theme.border}`, borderRadius: '14px',
+                                                '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.5)' : 'rgba(59,130,246,0.4)',
+                                                '--exp-hover-shadow': darkMode ? '0 0 24px rgba(59,130,246,0.1), 0 12px 30px rgba(0,0,0,0.3)' : '0 0 20px rgba(59,130,246,0.07), 0 10px 24px rgba(0,0,0,0.07)',
+                                            }}
+                                        >
+                                            <span aria-hidden="true" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '10px', backgroundColor: theme.accentMuted, color: theme.accent, flexShrink: 0 }}>
+                                                <Icon size={18} />
+                                            </span>
+                                            <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0, textAlign: 'left' }}>
+                                                <span style={{ fontSize: '12px', fontWeight: 600, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>{label}</span>
+                                                <span style={{ ...styles.mono, fontSize: '13px', color: theme.text, overflowWrap: 'anywhere' }}>{value}</span>
+                                            </span>
+                                            {external && <ExternalLink size={14} aria-hidden="true" className="contact-link-icon" style={{ marginLeft: 'auto', color: theme.textMuted, flexShrink: 0 }} />}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Reveal>
                     </div>
 
                     {/* Contact Robot */}
@@ -1738,7 +1878,7 @@ function MainPortfolio() {
                             className="contact-robot-wrapper contact-robot-enter"
                             style={{
                                 position: 'absolute',
-                                bottom: '40px',
+                                top: '230px', // level with the description, bubble beside the heading
                                 right: 'clamp(30px, 6vw, 80px)',
                                 zIndex: 5,
                                 pointerEvents: 'none',
@@ -1767,6 +1907,7 @@ function MainPortfolio() {
                                                 ? '0 0 20px rgba(59, 130, 246, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4)'
                                                 : '0 0 15px rgba(59, 130, 246, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08)',
                                             backdropFilter: 'blur(12px)',
+                                            width: 'max-content',
                                             maxWidth: '220px',
                                         }}
                                     >
@@ -1778,7 +1919,7 @@ function MainPortfolio() {
                                             lineHeight: 1.5,
                                             textShadow: darkMode ? '0 0 15px rgba(59, 130, 246, 0.2)' : 'none',
                                         }}>
-                                            Looking for an intern? Let’s connect. 💬
+                                            Hiring a new grad? Let’s connect. 💬
                                         </p>
                                     </div>
                                     {/* Bubble tail */}
@@ -1859,7 +2000,7 @@ function MainPortfolio() {
                                             lineHeight: 1.4,
                                             textAlign: 'center',
                                         }}>
-                                            Looking for an intern? Let’s connect. 💬
+                                            Hiring a new grad? Let’s connect. 💬
                                         </p>
                                     </div>
                                     {/* Small connector dots */}
@@ -1900,8 +2041,8 @@ function MainPortfolio() {
 
                 <footer style={{ padding: '32px 0', borderTop: `1px solid ${theme.border}`, backgroundColor: 'transparent' }}>
                     <div style={{ ...styles.container, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                        <p style={{ fontSize: '13px', color: theme.textMuted }}>© 2026 Abeed Mulla. Built with intention.</p>
-                        <p style={{ fontSize: '13px', color: theme.textMuted }}>Halifax, NS · Open to remote & relocation</p>
+                        <p style={{ fontSize: '13px', color: theme.textMuted }}>© 2026 Abeed Mulla</p>
+                        <p style={{ fontSize: '13px', color: theme.textMuted }}>Built with React · Halifax, NS</p>
                     </div>
                 </footer>
             </div>
@@ -2247,285 +2388,221 @@ function ExperienceSection({ theme, darkMode, styles }) {
 }
 
 // ============================================
-// PROJECT CAROUSEL
+// PROJECTS SHOWCASE
 // ============================================
 
-function ProjectCarousel({ projects, theme, darkMode, styles }) {
-    const carouselRef = useRef(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(true);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isMobileCarousel, setIsMobileCarousel] = useState(false);
+const RETURN_TO_PROJECTS_KEY = 'portfolio:returnTo';
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobileCarousel(window.innerWidth <= 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+function goBackToProjects(e) {
+    e.preventDefault();
+    try { sessionStorage.setItem(RETURN_TO_PROJECTS_KEY, 'projects'); } catch { /* storage unavailable */ }
+    window.location.hash = '';
+}
 
-    const checkScrollButtons = () => {
-        if (carouselRef.current) {
-            const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-            setCanScrollLeft(scrollLeft > 10);
-            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-
-            // Calculate current index for pagination dots
-            const cardWidth = isMobileCarousel ? clientWidth : 440;
-            const newIndex = Math.round(scrollLeft / cardWidth);
-            setCurrentIndex(Math.min(newIndex, projects.length - 1));
-        }
-    };
-
-    useEffect(() => {
-        checkScrollButtons();
-        const carousel = carouselRef.current;
-        if (carousel) {
-            carousel.addEventListener('scroll', checkScrollButtons);
-            return () => carousel.removeEventListener('scroll', checkScrollButtons);
-        }
-    }, [isMobileCarousel]);
-
-    const scroll = (direction) => {
-        if (carouselRef.current) {
-            const scrollAmount = direction === 'left' ? -440 : 440;
-            carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
-    };
-
-    const scrollToIndex = (index) => {
-        if (carouselRef.current) {
-            const cardWidth = isMobileCarousel ? carouselRef.current.clientWidth : 440;
-            carouselRef.current.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
-        }
-    };
-
+function WindowDots({ dark }) {
     return (
-        <div style={{ position: 'relative' }}>
-            {/* Desktop arrows - hidden on mobile via CSS */}
-            <button
-                onClick={() => scroll('left')}
-                disabled={!canScrollLeft}
-                aria-label="Previous project"
-                className="carousel-arrows"
-                style={{
-                    position: 'absolute',
-                    left: '24px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    zIndex: 10,
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    border: `1px solid ${theme.border}`,
-                    backgroundColor: darkMode ? 'rgba(20,20,22,0.9)' : 'rgba(255,255,255,0.9)',
-                    color: canScrollLeft ? theme.text : theme.textMuted,
-                    cursor: canScrollLeft ? 'pointer' : 'default',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: canScrollLeft ? 1 : 0.3,
-                    backdropFilter: 'blur(8px)',
-                    transition: 'opacity 0.2s',
-                }}
-            >
-                <ChevronLeft size={24} />
-            </button>
-            <button
-                onClick={() => scroll('right')}
-                disabled={!canScrollRight}
-                aria-label="Next project"
-                className="carousel-arrows"
-                style={{
-                    position: 'absolute',
-                    right: '24px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    zIndex: 10,
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    border: `1px solid ${theme.border}`,
-                    backgroundColor: darkMode ? 'rgba(20,20,22,0.9)' : 'rgba(255,255,255,0.9)',
-                    color: canScrollRight ? theme.text : theme.textMuted,
-                    cursor: canScrollRight ? 'pointer' : 'default',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: canScrollRight ? 1 : 0.3,
-                    backdropFilter: 'blur(8px)',
-                    transition: 'opacity 0.2s',
-                }}
-            >
-                <ChevronRight size={24} />
-            </button>
+        <div aria-hidden="true" style={{ display: 'flex', gap: '6px', padding: '10px 14px', backgroundColor: dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
+            {[0, 1, 2].map((i) => (<span key={i} style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: dark ? 'rgba(255,255,255,0.16)' : 'rgba(0,0,0,0.14)' }} />))}
+        </div>
+    );
+}
 
-            {/* Carousel container */}
-            <div
-                ref={carouselRef}
-                className="carousel-container"
-                style={{
-                    display: 'flex',
-                    gap: isMobileCarousel ? '16px' : '32px',
-                    padding: isMobileCarousel ? '20px 24px' : '20px 80px',
-                    overflowX: 'auto',
-                    scrollSnapType: 'x mandatory'
-                }}
-            >
-                {projects.map((project) => (
-                    <ProjectCard
-                        key={project.id}
-                        project={project}
-                        theme={theme}
-                        darkMode={darkMode}
-                        styles={styles}
-                        isMobile={isMobileCarousel}
-                    />
-                ))}
+function ProjectMedia({ project, darkMode }) {
+    if (project.isMobileApp) {
+        const phones = project.cardImages || [project.thumbnail];
+        return (
+            <div className="project-media" style={{ aspectRatio: '16 / 10', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4%', padding: '6% 8% 0', backgroundColor: darkMode ? '#0f0f11' : '#eef0f3', overflow: 'hidden' }}>
+                {phones.map((src, i) => {
+                    const isCenter = phones.length === 3 ? i === 1 : i === 0;
+                    return (
+                        <img
+                            key={src}
+                            src={src}
+                            alt={isCenter ? `${project.title} app screens` : ''}
+                            aria-hidden={isCenter ? undefined : 'true'}
+                            loading="lazy"
+                            decoding="async"
+                            width="806"
+                            height="1432"
+                            style={{ height: isCenter ? '92%' : '80%', width: 'auto', alignSelf: 'flex-end', borderRadius: '12px 12px 0 0', boxShadow: darkMode ? '0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)' : '0 10px 30px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)' }}
+                        />
+                    );
+                })}
             </div>
+        );
+    }
 
-            {/* Pagination dots - always visible but more prominent on mobile */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '10px',
-                marginTop: '24px',
-                padding: '0 24px',
-            }}>
-                {projects.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => scrollToIndex(index)}
-                        aria-label={`Go to project ${index + 1}`}
-                        style={{
-                            width: currentIndex === index ? '28px' : '10px',
-                            height: '10px',
-                            borderRadius: '5px',
-                            border: 'none',
-                            backgroundColor: currentIndex === index ? theme.accent : (darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'),
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            padding: 0,
-                        }}
-                    />
-                ))}
+    if (project.isTerminalScreenshot) {
+        const size = project.cardImageSize || {};
+        return (
+            <div className="project-media" style={{ aspectRatio: '16 / 10', display: 'flex', flexDirection: 'column', backgroundColor: '#0d0d0d', overflow: 'hidden' }}>
+                <WindowDots dark />
+                <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+                    <img src={project.cardImage || project.thumbnail} alt={`${project.title} terminal output`} loading="lazy" decoding="async" width={size.width} height={size.height} style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', borderRadius: '6px' }} />
+                </div>
+            </div>
+        );
+    }
+
+    const size = project.imageSize || {};
+    return (
+        <div className="project-media" style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: darkMode ? '#0f0f11' : '#f4f4f5', overflow: 'hidden' }}>
+            <WindowDots dark={darkMode} />
+            <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                <img src={project.thumbnail} alt={`${project.title} dashboard`} loading="lazy" decoding="async" width={size.width} height={size.height} style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }} />
             </div>
         </div>
     );
 }
 
-// ============================================
-// PROJECT CARD
-// ============================================
+function FramedScreenshot({ src, alt, size, darkMode, theme }) {
+    return (
+        <div style={{ borderRadius: '10px', overflow: 'hidden', border: `1px solid ${theme.border}`, backgroundColor: darkMode ? '#0f0f11' : '#f4f4f5' }}>
+            <WindowDots dark={darkMode} />
+            <img src={src} alt={alt} loading="lazy" decoding="async" width={size?.width} height={size?.height} style={{ display: 'block', width: '100%', height: 'auto' }} />
+        </div>
+    );
+}
 
-function ProjectCard({ project, theme, darkMode, styles, isMobile }) {
-    const [isHovered, setIsHovered] = useState(false);
+function FeaturedMedia({ project, darkMode, theme }) {
+    const [main, ...rest] = project.images;
+    return (
+        <div className="project-media" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <FramedScreenshot src={main.src} alt={main.caption} size={project.imageSize} darkMode={darkMode} theme={theme} />
+            {rest.length > 0 && (
+                <div className="featured-thumbs-row" style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(rest.length, 2)}, minmax(0, 1fr))`, gap: '12px' }}>
+                    {rest.slice(0, 2).map((img) => (
+                        <FramedScreenshot key={img.src} src={img.src} alt={img.caption} size={project.imageSize} darkMode={darkMode} theme={theme} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
 
-    const cardWidth = isMobile ? 'calc(100vw - 48px)' : '420px';
-    const cardMinWidth = isMobile ? 'calc(100vw - 48px)' : '420px';
-    const hasImage = !project.showPlaceholder && project.thumbnail && (project.thumbnail.startsWith('/images') || project.thumbnail.startsWith('http'));
-    const useContainFit = project.isMobileApp || project.isTerminalScreenshot;
+function ProjectActions({ project, theme }) {
+    const base = { position: 'relative', zIndex: 2, display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '9px 14px', fontSize: '13px', fontWeight: 500, borderRadius: '8px', textDecoration: 'none', transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease' };
+    return (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: 'auto', paddingTop: '22px' }}>
+            {/* Stretched link: covers the whole card so any click opens the project page */}
+            <a href={`#project/${project.id}`} className="project-stretch project-action" aria-label={`View the ${project.title} project`} style={{ ...base, position: 'static', backgroundColor: theme.accent, color: '#fff' }}>
+                View Project <ArrowRight size={14} aria-hidden="true" />
+            </a>
+            {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-action project-action-secondary" aria-label={`${project.title} source code on GitHub (opens in a new tab)`} style={{ ...base, border: `1px solid ${theme.border}`, color: theme.text, '--action-hover-border': theme.accent }}>
+                    <Github size={14} aria-hidden="true" /> GitHub
+                </a>
+            )}
+            {project.live && (
+                <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-action project-action-secondary" aria-label={`${project.title} live demo (opens in a new tab)`} style={{ ...base, border: `1px solid ${theme.border}`, color: theme.text, '--action-hover-border': theme.accent }}>
+                    <ExternalLink size={14} aria-hidden="true" /> Live Demo
+                </a>
+            )}
+        </div>
+    );
+}
+
+function ProjectHighlights({ items, theme, compact }) {
+    return (
+        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: compact ? '6px' : '8px', margin: 0, padding: 0 }}>
+            {items.map((item) => (
+                <li key={item} style={{ position: 'relative', paddingLeft: '18px', fontSize: compact ? '13px' : '14px', lineHeight: 1.55, color: theme.textMuted }}>
+                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: compact ? '9px' : '10px', width: '8px', height: '2px', borderRadius: '1px', backgroundColor: theme.accent }} />
+                    {item}
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+function ProjectsShowcase({ projects, theme, darkMode, styles }) {
+    const featured = projects.find((p) => p.featured) || projects[0];
+    const others = projects.filter((p) => p !== featured);
+
+    // Returning from a project page lands back on this section instead of the top of the page
+    useEffect(() => {
+        let target = null;
+        try {
+            target = sessionStorage.getItem(RETURN_TO_PROJECTS_KEY);
+            sessionStorage.removeItem(RETURN_TO_PROJECTS_KEY);
+        } catch { /* storage unavailable */ }
+        if (target !== 'projects') return;
+        const frame = requestAnimationFrame(() => {
+            document.getElementById('projects')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+        });
+        return () => cancelAnimationFrame(frame);
+    }, []);
+
+    const cardBase = {
+        position: 'relative',
+        cursor: 'pointer',
+        overflow: 'hidden',
+        backgroundColor: darkMode ? 'rgba(15,15,17,0.9)' : 'rgba(255,255,255,0.96)',
+        border: `1px solid ${theme.border}`,
+        borderRadius: '20px',
+        boxShadow: darkMode ? '0 4px 20px rgba(0,0,0,0.25)' : '0 4px 16px rgba(0,0,0,0.04)',
+        '--exp-hover-border': darkMode ? 'rgba(59,130,246,0.5)' : 'rgba(59,130,246,0.4)',
+        '--exp-hover-shadow': darkMode ? '0 0 30px rgba(59,130,246,0.1), 0 18px 44px rgba(0,0,0,0.38)' : '0 0 24px rgba(59,130,246,0.07), 0 14px 34px rgba(0,0,0,0.09)',
+    };
+    const tags = (items) => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '18px' }}>
+            {items.map((t) => (<span key={t} style={{ ...styles.tag, ...styles.mono, fontSize: '11px', padding: '3px 10px' }}>{t}</span>))}
+        </div>
+    );
+    const eyebrow = (text) => (
+        <span style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', color: theme.accent }}>{text}</span>
+    );
 
     return (
-        <div
-            className="carousel-card"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-                width: cardWidth,
-                minWidth: cardMinWidth,
-                backgroundColor: darkMode ? '#0f0f11' : '#ffffff',
-                borderRadius: isMobile ? '16px' : '20px',
-                border: `1px solid ${isHovered ? theme.accent : theme.border}`,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                transform: isHovered && !isMobile ? 'translateY(-8px)' : 'translateY(0)',
-                boxShadow: isHovered ? `0 0 40px ${theme.accent}25, 0 25px 50px rgba(0,0,0,0.3)` : '0 4px 20px rgba(0,0,0,0.15)',
-                scrollSnapAlign: 'center'
-            }}
-        >
-            <div style={{
-                width: '100%',
-                height: isMobile ? '200px' : '240px',
-                backgroundColor: project.isTerminalScreenshot ? '#1a1a1a' : (darkMode ? '#1a1a1d' : '#f4f4f5'),
-                position: 'relative',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                {/* Image display - different for mobile apps, terminal screenshots, vs web apps */}
-                {useContainFit && hasImage ? (
-                    // Mobile app or terminal - show full centered image
-                    <img
-                        src={project.thumbnail}
-                        alt={project.title}
-                        style={{
-                            maxHeight: '100%',
-                            maxWidth: '100%',
-                            width: 'auto',
-                            height: 'auto',
-                            objectFit: 'contain',
-                            padding: project.isTerminalScreenshot ? '16px' : '12px',
-                            borderRadius: project.isTerminalScreenshot ? '8px' : '0',
-                        }}
-                    />
-                ) : hasImage ? (
-                    // Web app - use background cover
-                    <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundImage: `url(${project.thumbnail})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center top',
-                    }} />
-                ) : null}
-
-                {/* Gradient overlay */}
-                <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to top, ${darkMode ? 'rgba(15,15,17,0.9)' : 'rgba(255,255,255,0.8)'} 0%, transparent 50%)`, pointerEvents: 'none' }} />
-
-                {/* Placeholder icon when no image */}
-                {!hasImage && (
-                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `linear-gradient(135deg, ${theme.accent}15 0%, ${theme.accent}05 100%)` }}>
-                        <Code2 size={isMobile ? 48 : 64} style={{ color: theme.accent, opacity: 0.4 }} />
+        <div>
+            {/* Featured project */}
+            <Reveal>
+                <article
+                    className="exp-card project-card project-featured"
+                    style={{
+                        ...cardBase,
+                        border: `1px solid ${darkMode ? 'rgba(59,130,246,0.3)' : 'rgba(59,130,246,0.25)'}`,
+                        boxShadow: darkMode ? '0 0 36px rgba(59,130,246,0.07), 0 8px 30px rgba(0,0,0,0.3)' : '0 0 30px rgba(59,130,246,0.06), 0 8px 24px rgba(0,0,0,0.05)',
+                    }}
+                >
+                    <div className="project-featured-media" style={{ padding: '24px 0 24px 24px', alignSelf: 'center' }}>
+                        <FeaturedMedia project={featured} darkMode={darkMode} theme={theme} />
                     </div>
-                )}
-
-                {/* Hover overlay with buttons */}
-                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', opacity: isHovered && !isMobile ? 1 : 0, transition: 'opacity 0.3s ease' }}>
-                    {project.live && project.live !== '#' && (
-                        <a href={project.live} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ ...styles.button, ...styles.buttonPrimary, padding: '10px 16px', fontSize: '13px' }}><ExternalLink size={16} /> Live Demo</a>
-                    )}
-                    {project.github && project.github !== '#' && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ ...styles.button, padding: '10px 16px', fontSize: '13px', backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.3)', color: '#fff' }}><Github size={16} /> Code</a>
-                    )}
-                </div>
-            </div>
-            <div style={{ padding: isMobile ? '20px' : '24px' }}>
-                <span style={{ fontSize: '11px', color: theme.accent, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px' }}>{project.subtitle}</span>
-                <h3 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: 700, marginTop: '8px', marginBottom: '12px', color: theme.text, lineHeight: 1.2 }}>{project.title}</h3>
-                <p style={{ fontSize: isMobile ? '14px' : '15px', color: theme.textMuted, lineHeight: 1.6, marginBottom: '16px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.description}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
-                    {project.techStack.slice(0, isMobile ? 3 : 4).map((tech) => (<span key={tech} style={{ ...styles.tag, ...styles.mono, fontSize: '11px', padding: '4px 10px' }}>{tech}</span>))}
-                    {project.techStack.length > (isMobile ? 3 : 4) && (<span style={{ fontSize: '11px', color: theme.textMuted, padding: '4px 10px' }}>+{project.techStack.length - (isMobile ? 3 : 4)}</span>)}
-                </div>
-
-                {/* Mobile: Show quick links row */}
-                {isMobile && (project.live || project.github) && (
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-                        {project.live && project.live !== '#' && (
-                            <a href={project.live} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ ...styles.button, ...styles.buttonPrimary, padding: '8px 14px', fontSize: '12px', flex: 1, justifyContent: 'center' }}><ExternalLink size={14} /> Demo</a>
-                        )}
-                        {project.github && project.github !== '#' && (
-                            <a href={project.github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ ...styles.button, ...styles.buttonSecondary, padding: '8px 14px', fontSize: '12px', flex: 1, justifyContent: 'center' }}><Github size={14} /> Code</a>
-                        )}
+                    <div style={{ padding: 'clamp(24px, 3vw, 36px)', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                            {eyebrow(featured.subtitle)}
+                            <span style={{ fontSize: '11px', fontWeight: 500, padding: '2px 9px', borderRadius: '999px', color: theme.accent, backgroundColor: theme.accentMuted }}>Featured</span>
+                        </div>
+                        <h3 style={{ fontSize: 'clamp(24px, 3vw, 30px)', fontWeight: 600, lineHeight: 1.2, marginBottom: '12px' }}>{featured.title}</h3>
+                        <p style={{ fontSize: '15px', lineHeight: 1.7, color: theme.textMuted, marginBottom: '18px' }}>{featured.description}</p>
+                        <ProjectHighlights items={featured.highlights} theme={theme} />
+                        {tags(featured.cardTech)}
+                        <ProjectActions project={featured} theme={theme} />
                     </div>
-                )}
+                </article>
+            </Reveal>
 
-                <a href={`#project/${project.id}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%', padding: isMobile ? '12px 16px' : '14px 20px', fontSize: isMobile ? '14px' : '15px', fontWeight: 600, borderRadius: '10px', border: `2px solid ${isHovered ? theme.accent : theme.border}`, backgroundColor: isHovered && !isMobile ? theme.accent : 'transparent', color: isHovered && !isMobile ? '#fff' : theme.text, textDecoration: 'none', transition: 'all 0.3s' }}>
-                    View Project <ArrowRight size={16} />
-                </a>
+            {/* Secondary projects */}
+            <div className="projects-secondary-grid" style={{ marginTop: '24px' }}>
+                {others.map((project, index) => (
+                    <Reveal key={project.id} delay={index * 100} style={{ display: 'flex' }}>
+                        <article className="exp-card project-card" style={{ ...cardBase, display: 'flex', flexDirection: 'column', width: '100%' }}>
+                            <div style={{ padding: '16px 16px 0' }}>
+                                <div style={{ borderRadius: '12px', overflow: 'hidden', border: `1px solid ${project.isTerminalScreenshot ? '#222' : theme.border}` }}>
+                                    <ProjectMedia project={project} darkMode={darkMode} />
+                                </div>
+                            </div>
+                            <div style={{ padding: '22px 24px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                <div style={{ marginBottom: '8px' }}>{eyebrow(project.subtitle)}</div>
+                                <h3 style={{ fontSize: '20px', fontWeight: 600, lineHeight: 1.3, marginBottom: '10px' }}>{project.title}</h3>
+                                <p style={{ fontSize: '14px', lineHeight: 1.65, color: theme.textMuted, marginBottom: '16px' }}>{project.description}</p>
+                                <ProjectHighlights items={project.highlights} theme={theme} compact />
+                                {tags(project.cardTech)}
+                                <ProjectActions project={project} theme={theme} />
+                            </div>
+                        </article>
+                    </Reveal>
+                ))}
             </div>
         </div>
     );
@@ -2535,9 +2612,94 @@ function ProjectCard({ project, theme, darkMode, styles, isMobile }) {
 // PROJECT DETAIL PAGE
 // ============================================
 
+function CaseStudyGallery({ project, theme, darkMode, isMobile }) {
+    const [active, setActive] = useState(0);
+    const images = project.images || [];
+    if (images.length === 0) return null;
+
+    const count = images.length;
+    const current = images[active];
+    const go = (delta) => setActive((i) => (i + delta + count) % count);
+    const stageBg = project.isTerminalScreenshot ? '#0d0d0d' : (darkMode ? '#0f0f11' : '#eef0f3');
+
+    const onKeyDown = (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    };
+
+    const arrow = (delta, label, Icon) => (
+        <button
+            type="button"
+            onClick={() => go(delta)}
+            aria-label={label}
+            className="gallery-arrow"
+            style={{ position: 'absolute', top: '50%', [delta < 0 ? 'left' : 'right']: '12px', transform: 'translateY(-50%)', width: '40px', height: '40px', borderRadius: '50%', border: `1px solid ${darkMode || project.isTerminalScreenshot ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}`, backgroundColor: darkMode || project.isTerminalScreenshot ? 'rgba(20,20,22,0.85)' : 'rgba(255,255,255,0.92)', color: darkMode || project.isTerminalScreenshot ? '#f4f4f5' : '#18181b', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(8px)' }}
+        >
+            <Icon size={18} aria-hidden="true" style={{ flexShrink: 0, width: '18px', height: '18px' }} />
+        </button>
+    );
+
+    return (
+        <div role="region" aria-roledescription="carousel" aria-label={`${project.title} screenshots`} onKeyDown={onKeyDown}>
+            <div style={{ borderRadius: '16px', overflow: 'hidden', border: `1px solid ${project.isTerminalScreenshot ? '#222' : theme.border}`, backgroundColor: stageBg }}>
+                {!project.isMobileApp && <WindowDots dark={darkMode || project.isTerminalScreenshot} />}
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: project.isMobileApp ? (isMobile ? '20px' : '28px') : (project.isTerminalScreenshot ? (isMobile ? '16px' : '28px 64px') : 0), minHeight: project.isTerminalScreenshot ? (isMobile ? '160px' : '260px') : undefined }}>
+                    <img
+                        key={current.src}
+                        src={current.src}
+                        alt={current.caption}
+                        decoding="async"
+                        className="gallery-image"
+                        style={project.isMobileApp
+                            ? { height: isMobile ? '420px' : '540px', maxWidth: '100%', width: 'auto', objectFit: 'contain', borderRadius: '14px', boxShadow: darkMode ? '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)' : '0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)' }
+                            : project.isTerminalScreenshot
+                                ? { maxWidth: '100%', maxHeight: isMobile ? '320px' : '440px', width: 'auto', height: 'auto', objectFit: 'contain', borderRadius: '8px' }
+                                : { display: 'block', width: '100%', height: 'auto' }}
+                    />
+                    {count > 1 && arrow(-1, 'Previous screenshot', ChevronLeft)}
+                    {count > 1 && arrow(1, 'Next screenshot', ChevronRight)}
+                </div>
+            </div>
+            <p aria-live="polite" style={{ marginTop: '14px', fontSize: '13px', color: theme.textMuted, textAlign: 'center' }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: theme.accent, marginRight: '8px' }}>{String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span>
+                {current.caption}
+            </p>
+            {count > 1 && (
+                <div className="gallery-thumbs" style={{ display: 'flex', gap: '10px', marginTop: '16px', overflowX: 'auto', padding: '4px 2px', justifyContent: isMobile ? 'flex-start' : 'center' }}>
+                    {images.map((img, i) => (
+                        <button
+                            key={img.src}
+                            type="button"
+                            onClick={() => setActive(i)}
+                            aria-label={`Show screenshot ${i + 1}: ${img.caption}`}
+                            aria-current={i === active ? 'true' : undefined}
+                            style={{ flexShrink: 0, padding: 0, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', border: `2px solid ${i === active ? theme.accent : theme.border}`, opacity: i === active ? 1 : 0.65, backgroundColor: project.isTerminalScreenshot ? '#0d0d0d' : stageBg, width: project.isMobileApp ? '52px' : '112px', height: project.isMobileApp ? '92px' : '64px', transition: 'opacity 0.2s ease, border-color 0.2s ease' }}
+                        >
+                            <img src={img.src} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: project.isTerminalScreenshot ? 'contain' : 'cover', objectPosition: 'top' }} />
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+function CaseStudySection({ number, title, theme, isMobile, children }) {
+    return (
+        <Reveal style={{ marginBottom: isMobile ? '56px' : '80px' }}>
+            <section>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', marginBottom: '24px', paddingBottom: '14px', borderBottom: `1px solid ${theme.border}` }}>
+                    <span aria-hidden="true" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '13px', color: theme.accent }}>{String(number).padStart(2, '0')}</span>
+                    <h2 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: 600, color: theme.text }}>{title}</h2>
+                </div>
+                {children}
+            </section>
+        </Reveal>
+    );
+}
+
 function ProjectDetailPage({ project }) {
     const [darkMode, setDarkMode] = useState(true);
-    const [activeImage, setActiveImage] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -2564,35 +2726,54 @@ function ProjectDetailPage({ project }) {
         accentMuted: darkMode ? 'rgba(59,130,246,0.1)' : 'rgba(59,130,246,0.08)',
     };
 
-    const SectionTitle = ({ children }) => (
-        <h2 style={{ fontSize: isMobile ? '20px' : '24px', fontWeight: 600, marginBottom: '16px', color: theme.text }}>{children}</h2>
-    );
+    const projectIndex = projectsData.findIndex((p) => p.id === project.id);
+    const nextProject = projectsData[(projectIndex + 1) % projectsData.length];
+
+    const mono = { fontFamily: "'JetBrains Mono', monospace" };
+    const card = { padding: '20px 22px', borderRadius: '14px', backgroundColor: darkMode ? '#121214' : '#ffffff', border: `1px solid ${theme.border}` };
+    // Sections are numbered in render order, so optional sections never leave gaps
+    let sectionCount = 0;
+    const sectionProps = () => ({ number: ++sectionCount, theme, isMobile });
 
     const Paragraph = ({ children }) => (
         <p style={{ fontSize: isMobile ? '15px' : '16px', lineHeight: 1.8, color: theme.textMuted }}>{children}</p>
     );
 
+    const BulletList = ({ items, square }) => (
+        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {items.map((item) => (
+                <li key={item} style={{ fontSize: '15px', color: theme.textMuted, paddingLeft: '22px', position: 'relative', lineHeight: 1.6 }}>
+                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: '9px', width: '7px', height: '7px', borderRadius: square ? '2px' : '50%', backgroundColor: theme.accent }} />
+                    {item}
+                </li>
+            ))}
+        </ul>
+    );
+
+    const CardGrid = ({ items, minWidth = 260 }) => (
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, ${minWidth}px), 1fr))`, gap: '16px' }}>
+            {items.map((item) => (
+                <div key={item.title} style={card}>
+                    <h3 style={{ fontSize: '15px', fontWeight: 600, color: theme.text, marginBottom: '8px' }}>{item.title}</h3>
+                    <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.7 }}>{item.content}</p>
+                </div>
+            ))}
+        </div>
+    );
+
     const CodeBlock = ({ title, code }) => (
         <div style={{ marginBottom: '20px' }}>
             {title && <p style={{ fontSize: '13px', fontWeight: 600, color: theme.textMuted, marginBottom: '8px' }}>{title}</p>}
-            <pre style={{
-                backgroundColor: darkMode ? '#1a1a1d' : '#f4f4f5',
-                padding: '16px 20px',
-                borderRadius: '10px',
-                overflow: 'auto',
-                fontSize: '13px',
-                lineHeight: 1.6,
-                fontFamily: "'JetBrains Mono', monospace",
-                color: theme.text,
-                border: `1px solid ${theme.border}`,
-            }}>
+            <pre tabIndex={0} aria-label={title ? `${title} code` : 'Code example'} style={{ backgroundColor: darkMode ? '#121214' : '#f4f4f5', padding: '16px 20px', borderRadius: '12px', overflowX: 'auto', fontSize: '13px', lineHeight: 1.65, ...mono, color: theme.text, border: `1px solid ${theme.border}`, whiteSpace: 'pre' }}>
                 <code>{code}</code>
             </pre>
         </div>
     );
 
+    const linkButton = { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 20px', fontSize: '14px', fontWeight: 600, borderRadius: '10px', textDecoration: 'none' };
+
     return (
-        <div style={{ minHeight: '100vh', width: '100%', backgroundColor: theme.bg, color: theme.text, fontFamily: "'Sora', sans-serif" }}>
+        <div style={{ minHeight: '100vh', width: '100%', backgroundColor: theme.bg, color: theme.text, fontFamily: "'Sora', sans-serif", transition: 'background-color 0.3s ease, color 0.3s ease' }}>
             <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2602,391 +2783,196 @@ function ProjectDetailPage({ project }) {
         ::selection { background-color: ${theme.accent}; color: white; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .fade-section { animation: fadeIn 0.6s ease forwards; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.reveal-visible { opacity: 1; transform: none; }
+        .gallery-image { animation: fadeIn 0.35s ease; }
+        .gallery-thumbs { scrollbar-width: thin; }
+        .cs-link { transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .cs-link:hover { opacity: 0.9; }
+        .cs-link-secondary:hover { border-color: ${theme.accent} !important; color: ${theme.accent} !important; }
+        a:focus-visible, button:focus-visible, pre:focus-visible { outline: 2px solid ${theme.accent}; outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) {
+          html { scroll-behavior: auto; }
+          .fade-section, .gallery-image { animation: none !important; }
+          .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+        }
       `}</style>
 
             {/* Header */}
             <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, backgroundColor: darkMode ? 'rgba(10,10,11,0.9)' : 'rgba(250,250,250,0.9)', backdropFilter: 'blur(12px)', borderBottom: `1px solid ${theme.border}` }}>
-                <div style={{ maxWidth: '1200px', margin: '0 auto', padding: isMobile ? '12px 16px' : '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = ''; }} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: theme.textMuted, textDecoration: 'none', fontSize: '14px' }}>
-                        <ChevronLeft size={20} /> {!isMobile && 'Back to Portfolio'}
+                <div style={{ maxWidth: '1100px', margin: '0 auto', padding: isMobile ? '12px 16px' : '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+                    <a href="#projects" onClick={goBackToProjects} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: theme.textMuted, textDecoration: 'none', fontSize: '14px' }}>
+                        <ChevronLeft size={18} aria-hidden="true" /> {isMobile ? 'Back' : 'Back to Projects'}
                     </a>
                     <div style={{ display: 'flex', gap: isMobile ? '8px' : '12px', alignItems: 'center' }}>
-                        {project.live && project.live !== '#' && (
-                            <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: isMobile ? '8px 12px' : '8px 16px', fontSize: '13px', fontWeight: 500, borderRadius: '8px', backgroundColor: theme.accent, color: '#fff', textDecoration: 'none' }}>
-                                <ExternalLink size={14} /> {!isMobile && 'Live Demo'}
+                        {project.live && (
+                            <a href={project.live} target="_blank" rel="noopener noreferrer" aria-label="Live demo (opens in a new tab)" className="cs-link" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: isMobile ? '8px 10px' : '8px 16px', fontSize: '13px', fontWeight: 500, borderRadius: '8px', backgroundColor: theme.accent, color: '#fff', textDecoration: 'none' }}>
+                                <ExternalLink size={14} aria-hidden="true" /> {!isMobile && 'Live Demo'}
                             </a>
                         )}
-                        {project.github && project.github !== '#' && (
-                            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: isMobile ? '8px 12px' : '8px 16px', fontSize: '13px', fontWeight: 500, borderRadius: '8px', backgroundColor: 'transparent', border: `1px solid ${theme.border}`, color: theme.text, textDecoration: 'none' }}>
-                                <Github size={14} /> {!isMobile && 'View Code'}
+                        {project.github && (
+                            <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="Source code on GitHub (opens in a new tab)" className="cs-link cs-link-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: isMobile ? '8px 10px' : '8px 16px', fontSize: '13px', fontWeight: 500, borderRadius: '8px', backgroundColor: 'transparent', border: `1px solid ${theme.border}`, color: theme.text, textDecoration: 'none' }}>
+                                <Github size={14} aria-hidden="true" /> {!isMobile && 'GitHub'}
                             </a>
                         )}
-                        <button onClick={() => setDarkMode(!darkMode)} style={{ padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', color: theme.textMuted, cursor: 'pointer' }}>{darkMode ? <Sun size={18} /> : <Moon size={18} />}</button>
+                        <button type="button" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle theme" style={{ padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', color: theme.textMuted, cursor: 'pointer', display: 'flex' }}>{darkMode ? <Sun size={18} /> : <Moon size={18} />}</button>
                     </div>
                 </div>
             </header>
 
-            {/* Hero Section */}
-            <section className="fade-section" style={{ paddingTop: isMobile ? '100px' : '120px', paddingBottom: isMobile ? '40px' : '60px', backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.5)', width: '100%' }}>
-                <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-                    <span style={{ fontSize: '12px', color: theme.accent, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px' }}>{project.subtitle}</span>
-                    <h1 style={{ fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : 'clamp(36px, 6vw, 56px)', fontWeight: 700, marginTop: '12px', marginBottom: '16px', lineHeight: 1.1 }}>{project.title}</h1>
-                    <p style={{ fontSize: isMobile ? '16px' : '20px', color: theme.textMuted, maxWidth: '700px', lineHeight: 1.5, marginBottom: '24px' }}>{project.tagline}</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '40px' }}>
-                        {project.techStack.map((tech) => (<span key={tech} style={{ padding: '6px 14px', fontSize: '13px', fontWeight: 500, borderRadius: '6px', backgroundColor: theme.accentMuted, color: theme.accent, fontFamily: "'JetBrains Mono', monospace" }}>{tech}</span>))}
-                    </div>
-
-                    {/* Hero Image */}
-                    {project.images && project.images.length > 0 && (
-                        <div style={{
-                            borderRadius: '16px',
-                            overflow: 'hidden',
-                            border: `1px solid ${theme.border}`,
-                            backgroundColor: project.isTerminalScreenshot ? '#1a1a1a' : (darkMode ? '#1a1a1d' : '#f4f4f5'),
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}>
-                            {(project.isMobileApp || project.isTerminalScreenshot) ? (
-                                // Mobile app or terminal screenshot - show full image with proper aspect ratio
-                                <div style={{
-                                    padding: project.isTerminalScreenshot ? '16px' : '24px',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    backgroundColor: project.isTerminalScreenshot ? '#0d0d0d' : (darkMode ? '#0f0f11' : '#f0f0f2'),
-                                    width: '100%',
-                                }}>
-                                    <img
-                                        src={project.images[activeImage]?.src || project.thumbnail}
-                                        alt={project.images[activeImage]?.caption || project.title}
-                                        style={{
-                                            maxHeight: isMobile ? '300px' : (project.isTerminalScreenshot ? '350px' : '500px'),
-                                            width: 'auto',
-                                            maxWidth: '100%',
-                                            borderRadius: project.isTerminalScreenshot ? '8px' : '12px',
-                                            boxShadow: project.isTerminalScreenshot
-                                                ? '0 10px 40px rgba(0,0,0,0.6)'
-                                                : (darkMode
-                                                    ? '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)'
-                                                    : '0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)'),
-                                        }}
-                                    />
-                                </div>
-                            ) : (
-                                // Web app screenshot - use background cover
-                                <div style={{
-                                    width: '100%',
-                                    height: isMobile ? '250px' : '400px',
-                                    backgroundImage: `url(${project.images[activeImage]?.src || project.thumbnail})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center top'
-                                }} />
+            <main>
+                {/* Project header */}
+                <section className="fade-section" style={{ paddingTop: isMobile ? '96px' : '128px', paddingBottom: isMobile ? '48px' : '72px', backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.6)', borderBottom: `1px solid ${theme.border}` }}>
+                    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 24px' }}>
+                        <span style={{ fontSize: '12px', color: theme.accent, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '2px' }}>{project.subtitle}</span>
+                        <h1 style={{ fontSize: isMobile ? 'clamp(30px, 8vw, 40px)' : 'clamp(40px, 6vw, 56px)', fontWeight: 700, marginTop: '14px', marginBottom: '16px', lineHeight: 1.1 }}>{project.title}</h1>
+                        <p style={{ fontSize: isMobile ? '16px' : '19px', color: theme.textMuted, maxWidth: '720px', lineHeight: 1.6, marginBottom: '24px' }}>{project.description}</p>
+                        <ul aria-label="Technologies" style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '28px' }}>
+                            {project.techStack.map((tech) => (<li key={tech} style={{ padding: '5px 12px', fontSize: '12px', fontWeight: 500, borderRadius: '6px', backgroundColor: theme.accentMuted, color: theme.accent, ...mono }}>{tech}</li>))}
+                        </ul>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: isMobile ? '40px' : '56px' }}>
+                            {project.live && (
+                                <a href={project.live} target="_blank" rel="noopener noreferrer" className="cs-link" style={{ ...linkButton, backgroundColor: theme.accent, color: '#fff' }}><ExternalLink size={16} aria-hidden="true" /> Live Demo</a>
                             )}
-                            {project.images[activeImage]?.caption && (
-                                <p style={{ padding: '12px 16px', fontSize: '13px', color: theme.textMuted, backgroundColor: project.isTerminalScreenshot ? '#0d0d0d' : (darkMode ? '#0f0f11' : '#fafafa'), textAlign: 'center', width: '100%' }}>{project.images[activeImage].caption}</p>
+                            {project.github && (
+                                <a href={project.github} target="_blank" rel="noopener noreferrer" className="cs-link cs-link-secondary" style={{ ...linkButton, border: `1px solid ${theme.border}`, color: theme.text }}><Github size={16} aria-hidden="true" /> View Source</a>
                             )}
                         </div>
-                    )}
-                </div>
-            </section>
+                        <CaseStudyGallery project={project} theme={theme} darkMode={darkMode} isMobile={isMobile} />
+                    </div>
+                </section>
 
-            {/* Main Content */}
-            <section style={{ padding: isMobile ? '40px 0' : '80px 0', width: '100%' }}>
-                <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-
-                    {/* Overview */}
-                    <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                        <SectionTitle>Overview</SectionTitle>
+                {/* Body */}
+                <div style={{ maxWidth: '840px', margin: '0 auto', padding: isMobile ? '56px 24px 0' : '88px 24px 0' }}>
+                    <CaseStudySection {...sectionProps()} title="Overview">
                         <Paragraph>{project.overview}</Paragraph>
-                    </div>
-
-                    {/* The Problem */}
-                    <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                        <SectionTitle>The Problem</SectionTitle>
-                        <Paragraph>{project.problem}</Paragraph>
-                    </div>
-
-                    {/* Solution */}
-                    <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                        <SectionTitle>Solution & Approach</SectionTitle>
-                        <Paragraph>{project.solution}</Paragraph>
-                    </div>
-
-                    {/* HTTP Explanation (for HTTP Server project) */}
-                    {project.httpExplanation && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>{project.httpExplanation.title}</SectionTitle>
-                            <div style={{
-                                backgroundColor: darkMode ? '#1a1a1d' : '#f4f4f5',
-                                padding: '20px 24px',
-                                borderRadius: '12px',
-                                border: `1px solid ${theme.border}`,
-                            }}>
-                                <pre style={{
-                                    fontSize: '13px',
-                                    lineHeight: 1.7,
-                                    fontFamily: "'JetBrains Mono', monospace",
-                                    color: theme.textMuted,
-                                    whiteSpace: 'pre-wrap',
-                                    wordBreak: 'break-word',
-                                    margin: 0,
-                                }}>
-                                    {project.httpExplanation.content}
-                                </pre>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '16px', marginTop: '28px' }}>
+                            <div style={card}>
+                                <p style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', color: theme.accent, marginBottom: '10px' }}>The Problem</p>
+                                <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.75 }}>{project.problem}</p>
+                            </div>
+                            <div style={card}>
+                                <p style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', color: theme.accent, marginBottom: '10px' }}>The Approach</p>
+                                <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.75 }}>{project.solution}</p>
                             </div>
                         </div>
-                    )}
+                    </CaseStudySection>
 
-                    {/* Architecture Diagram (for HTTP Server project) */}
-                    {project.architectureDiagram && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>{project.architectureDiagram.title}</SectionTitle>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                {project.architectureDiagram.steps.map((step, i) => (
-                                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                                        <div style={{
-                                            width: '36px',
-                                            height: '36px',
-                                            borderRadius: '50%',
-                                            backgroundColor: theme.accent,
-                                            color: '#fff',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            fontSize: '14px',
-                                            fontWeight: 600,
-                                            flexShrink: 0,
-                                        }}>
-                                            {step.step}
-                                        </div>
-                                        <div style={{ paddingTop: '6px' }}>
-                                            <p style={{ fontSize: '15px', fontWeight: 600, color: theme.text, marginBottom: '4px' }}>{step.label}</p>
-                                            <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.5 }}>{step.description}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Architecture Details (for StudentHub project) */}
-                    {project.architectureDetails && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>Architecture</SectionTitle>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {project.architectureDetails.layers.map((layer, i) => (
-                                    <div key={i} style={{
-                                        padding: '16px 20px',
-                                        borderRadius: '10px',
-                                        backgroundColor: darkMode ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.05)',
-                                        border: `1px solid ${darkMode ? 'rgba(59,130,246,0.2)' : 'rgba(59,130,246,0.15)'}`,
-                                    }}>
-                                        <p style={{ fontSize: '14px', fontWeight: 600, color: theme.accent, marginBottom: '4px' }}>{layer.name}</p>
-                                        <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.5 }}>{layer.description}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Key Features */}
-                    {project.features && project.features.length > 0 && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>Key Features</SectionTitle>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {project.features.map((feature, i) => (
-                                    <li key={i} style={{ fontSize: '15px', color: theme.textMuted, paddingLeft: '24px', position: 'relative', lineHeight: 1.6 }}>
-                                        <span style={{ position: 'absolute', left: 0, top: '8px', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: theme.accent }} />
+                    {project.features?.length > 0 && (
+                        <CaseStudySection {...sectionProps()} title="Key Features">
+                            <ul style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '12px 28px' }}>
+                                {project.features.map((feature) => (
+                                    <li key={feature} style={{ fontSize: '15px', color: theme.textMuted, paddingLeft: '22px', position: 'relative', lineHeight: 1.6 }}>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, top: '9px', width: '7px', height: '7px', borderRadius: '50%', backgroundColor: theme.accent }} />
                                         {feature}
                                     </li>
                                 ))}
                             </ul>
-                        </div>
+                        </CaseStudySection>
                     )}
 
-                    {/* Code Examples (for HTTP Server project) */}
-                    {project.codeExamples && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>Running the Project</SectionTitle>
-                            {project.codeExamples.map((example, i) => (
-                                <CodeBlock key={i} title={example.title} code={example.code} />
-                            ))}
-                        </div>
+                    {(project.architectureDiagram || project.architectureDetails) && (
+                        <CaseStudySection {...sectionProps()} title={project.architectureDiagram ? project.architectureDiagram.title : 'Architecture'}>
+                            {project.architectureDiagram && (
+                                <ol style={{ listStyle: 'none', position: 'relative' }}>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: '17px', top: '18px', bottom: '18px', width: '2px', backgroundColor: darkMode ? 'rgba(59,130,246,0.25)' : 'rgba(59,130,246,0.2)' }} />
+                                    {project.architectureDiagram.steps.map((step, i) => (
+                                        <li key={step.step} style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: i === project.architectureDiagram.steps.length - 1 ? 0 : '18px' }}>
+                                            <span aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: theme.accent, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 600, flexShrink: 0, ...mono }}>{step.step}</span>
+                                            <div style={{ ...card, padding: '12px 16px', flex: 1 }}>
+                                                <p style={{ fontSize: '15px', fontWeight: 600, color: theme.text, marginBottom: '2px' }}>{step.label}</p>
+                                                <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.55 }}>{step.description}</p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ol>
+                            )}
+                            {project.architectureDetails && (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                                    {project.architectureDetails.layers.map((layer, i) => (
+                                        <React.Fragment key={layer.name}>
+                                            {i > 0 && <span aria-hidden="true" style={{ alignSelf: 'center', width: '2px', height: '14px', backgroundColor: darkMode ? 'rgba(59,130,246,0.3)' : 'rgba(59,130,246,0.25)' }} />}
+                                            <div style={{ padding: '14px 18px', borderRadius: '12px', backgroundColor: darkMode ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.05)', border: `1px solid ${darkMode ? 'rgba(59,130,246,0.22)' : 'rgba(59,130,246,0.16)'}` }}>
+                                                <p style={{ fontSize: '14px', fontWeight: 600, color: theme.accent, marginBottom: '4px' }}>{layer.name}</p>
+                                                <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.55 }}>{layer.description}</p>
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            )}
+                        </CaseStudySection>
                     )}
 
-                    {/* Tech Stack Reasoning */}
-                    <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                        <SectionTitle>Why This Tech Stack</SectionTitle>
-                        <Paragraph>{project.techReasoning}</Paragraph>
-                    </div>
+                    {project.httpExplanation && (
+                        <CaseStudySection {...sectionProps()} title={project.httpExplanation.title}>
+                            <pre tabIndex={0} aria-label="HTTP request and response example" style={{ backgroundColor: darkMode ? '#121214' : '#f4f4f5', padding: '20px 24px', borderRadius: '12px', border: `1px solid ${theme.border}`, fontSize: '13px', lineHeight: 1.75, ...mono, color: theme.textMuted, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                {project.httpExplanation.content}
+                            </pre>
+                        </CaseStudySection>
+                    )}
 
-                    {/* Technical Insights */}
-                    {project.technicalInsights && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>Technical Insights</SectionTitle>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                {project.technicalInsights.map((insight, i) => (
-                                    <div key={i} style={{
-                                        padding: '20px 24px',
-                                        borderRadius: '12px',
-                                        backgroundColor: darkMode ? '#141416' : '#ffffff',
-                                        border: `1px solid ${theme.border}`,
-                                    }}>
-                                        <h3 style={{ fontSize: '16px', fontWeight: 600, color: theme.text, marginBottom: '10px' }}>{insight.title}</h3>
-                                        <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.7 }}>{insight.content}</p>
+                    {project.decisions?.length > 0 && (
+                        <CaseStudySection {...sectionProps()} title="Technical Decisions">
+                            <CardGrid items={project.decisions} />
+                        </CaseStudySection>
+                    )}
+
+                    {project.challenges?.length > 0 && (
+                        <CaseStudySection {...sectionProps()} title="Engineering Challenges">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                {project.challenges.map((item) => (
+                                    <div key={item.title} style={{ ...card, borderLeft: `3px solid ${theme.accent}` }}>
+                                        <h3 style={{ fontSize: '16px', fontWeight: 600, color: theme.text, marginBottom: '8px' }}>{item.title}</h3>
+                                        <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.75 }}>{item.content}</p>
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </CaseStudySection>
                     )}
 
-                    {/* Challenges */}
-                    <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                        <SectionTitle>Challenges & Solutions</SectionTitle>
-                        <Paragraph>{project.challenges}</Paragraph>
-                    </div>
-
-                    {/* What I Learned */}
-                    {project.learned && project.learned.length > 0 && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>What I Learned</SectionTitle>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                {project.learned.map((item, i) => (
-                                    <li key={i} style={{ fontSize: '15px', color: theme.textMuted, paddingLeft: '24px', position: 'relative', lineHeight: 1.6 }}>
-                                        <span style={{ position: 'absolute', left: 0, top: '8px', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: theme.accent }} />
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                    {project.codeExamples && (
+                        <CaseStudySection {...sectionProps()} title="Running the Project">
+                            {project.codeExamples.map((example) => (
+                                <CodeBlock key={example.title} title={example.title} code={example.code} />
+                            ))}
+                        </CaseStudySection>
                     )}
 
-                    {/* Future Improvements */}
-                    {project.futureImprovements ? (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>Future Improvements</SectionTitle>
-                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                {project.futureImprovements.map((item, i) => (
-                                    <li key={i} style={{ fontSize: '15px', color: theme.textMuted, paddingLeft: '24px', position: 'relative', lineHeight: 1.6 }}>
-                                        <span style={{ position: 'absolute', left: 0, top: '8px', width: '8px', height: '8px', borderRadius: '2px', backgroundColor: theme.accent }} />
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : project.improvements && (
-                        <div className="fade-section" style={{ marginBottom: isMobile ? '40px' : '60px' }}>
-                            <SectionTitle>What I'd Improve</SectionTitle>
-                            <Paragraph>{project.improvements}</Paragraph>
-                        </div>
-                    )}
-
-                    {/* Metrics */}
-                    {project.metrics && (
-                        <div className="fade-section" style={{ padding: '24px', borderRadius: '12px', backgroundColor: theme.accentMuted, border: `1px solid ${theme.accent}30`, marginBottom: isMobile ? '40px' : '60px' }}>
-                            <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px', color: theme.accent }}>Results & Impact</h3>
-                            <p style={{ fontSize: '15px', lineHeight: 1.6, color: theme.text }}>{project.metrics}</p>
-                        </div>
+                    {(project.learned?.length > 0 || project.futureImprovements?.length > 0) && (
+                        <CaseStudySection {...sectionProps()} title="Lessons & Next Steps">
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '16px' }}>
+                                {project.learned?.length > 0 && (
+                                    <div style={card}>
+                                        <h3 style={{ fontSize: '15px', fontWeight: 600, color: theme.text, marginBottom: '14px' }}>What I Learned</h3>
+                                        <BulletList items={project.learned} />
+                                    </div>
+                                )}
+                                {project.futureImprovements?.length > 0 && (
+                                    <div style={card}>
+                                        <h3 style={{ fontSize: '15px', fontWeight: 600, color: theme.text, marginBottom: '14px' }}>Future Improvements</h3>
+                                        <BulletList items={project.futureImprovements} square />
+                                    </div>
+                                )}
+                            </div>
+                        </CaseStudySection>
                     )}
                 </div>
-            </section>
 
-            {/* Visual Showcase */}
-            {project.images && project.images.length > 1 && (
-                <section className="fade-section" style={{ padding: isMobile ? '40px 0' : '60px 0', backgroundColor: darkMode ? 'rgba(20,20,22,0.5)' : 'rgba(255,255,255,0.5)', width: '100%' }}>
-                    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', width: '100%' }}>
-                        <h2 style={{ fontSize: isMobile ? '20px' : '24px', fontWeight: 600, marginBottom: '32px', color: theme.text, textAlign: 'center' }}>Visual Showcase</h2>
-
-                        {(project.isMobileApp || project.isTerminalScreenshot) ? (
-                            // Mobile app or terminal screenshots - grid with full images
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: isMobile
-                                    ? '1fr'
-                                    : project.isTerminalScreenshot
-                                        ? 'repeat(2, 1fr)'
-                                        : `repeat(${Math.min(project.images.length, 5)}, 1fr)`,
-                                gap: isMobile ? '16px' : '20px',
-                            }}>
-                                {project.images.map((img, index) => (
-                                    <div
-                                        key={index}
-                                        onClick={() => setActiveImage(index)}
-                                        style={{
-                                            borderRadius: '12px',
-                                            overflow: 'hidden',
-                                            border: `2px solid ${activeImage === index ? theme.accent : theme.border}`,
-                                            cursor: 'pointer',
-                                            backgroundColor: project.isTerminalScreenshot ? '#0d0d0d' : (darkMode ? '#1a1a1d' : '#f4f4f5'),
-                                            transition: 'all 0.2s',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                        }}
-                                    >
-                                        <div style={{
-                                            padding: project.isTerminalScreenshot ? '12px' : (isMobile ? '12px' : '16px'),
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            backgroundColor: project.isTerminalScreenshot ? '#0d0d0d' : (darkMode ? '#0f0f11' : '#f0f0f2'),
-                                            flex: 1,
-                                            minHeight: project.isTerminalScreenshot ? (isMobile ? '150px' : '180px') : 'auto',
-                                        }}>
-                                            <img
-                                                src={img.src}
-                                                alt={img.caption}
-                                                style={{
-                                                    maxHeight: project.isTerminalScreenshot
-                                                        ? (isMobile ? '140px' : '160px')
-                                                        : (isMobile ? '180px' : '280px'),
-                                                    width: 'auto',
-                                                    maxWidth: '100%',
-                                                    borderRadius: project.isTerminalScreenshot ? '6px' : '8px',
-                                                    boxShadow: project.isTerminalScreenshot
-                                                        ? '0 4px 16px rgba(0,0,0,0.4)'
-                                                        : (darkMode
-                                                            ? '0 8px 24px rgba(0,0,0,0.4)'
-                                                            : '0 8px 24px rgba(0,0,0,0.1)'),
-                                                }}
-                                            />
-                                        </div>
-                                        <p style={{ padding: isMobile ? '10px' : '12px', fontSize: isMobile ? '11px' : '12px', color: theme.textMuted, textAlign: 'center', lineHeight: 1.4, backgroundColor: project.isTerminalScreenshot ? '#1a1a1a' : 'transparent' }}>{img.caption}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            // Web app screenshots - standard grid with background cover
-                            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-                                {project.images.map((img, index) => (
-                                    <div key={index} onClick={() => setActiveImage(index)} style={{ borderRadius: '12px', overflow: 'hidden', border: `2px solid ${activeImage === index ? theme.accent : theme.border}`, cursor: 'pointer', backgroundColor: darkMode ? '#1a1a1d' : '#f4f4f5', transition: 'all 0.2s' }}>
-                                        <div style={{ width: '100%', height: isMobile ? '200px' : '180px', backgroundImage: `url(${img.src})`, backgroundSize: 'cover', backgroundPosition: 'center top' }} />
-                                        <p style={{ padding: '12px', fontSize: '12px', color: theme.textMuted, textAlign: 'center' }}>{img.caption}</p>
-                                    </div>
-                                ))}
-                            </div>
+                {/* Footer navigation */}
+                <section style={{ borderTop: `1px solid ${theme.border}`, padding: isMobile ? '48px 0 56px' : '64px 0 80px' }}>
+                    <div style={{ maxWidth: '840px', margin: '0 auto', padding: '0 24px', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
+                        <a href="#projects" onClick={goBackToProjects} className="cs-link cs-link-secondary" style={{ ...linkButton, border: `1px solid ${theme.border}`, color: theme.text, fontWeight: 500 }}>
+                            <ChevronLeft size={16} aria-hidden="true" /> All Projects
+                        </a>
+                        {nextProject && nextProject.id !== project.id && (
+                            <a href={`#project/${nextProject.id}`} className="cs-link" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', textDecoration: 'none', color: theme.text, marginLeft: 'auto', textAlign: 'right' }}>
+                                <span style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', color: theme.textMuted, marginBottom: '4px' }}>Next Project</span>
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: isMobile ? '17px' : '20px', fontWeight: 600 }}>{nextProject.title} <ArrowRight size={18} aria-hidden="true" style={{ color: theme.accent }} /></span>
+                            </a>
                         )}
                     </div>
                 </section>
-            )}
-
-            {/* CTA Section */}
-            <section className="fade-section" style={{ padding: isMobile ? '60px 0' : '80px 0', width: '100%' }}>
-                <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 24px', textAlign: 'center', width: '100%' }}>
-                    <h2 style={{ fontSize: isMobile ? '24px' : '28px', fontWeight: 600, marginBottom: '16px' }}>Interested in this project?</h2>
-                    <p style={{ fontSize: '16px', color: theme.textMuted, marginBottom: '32px' }}>
-                        {project.live ? 'Check out the live demo or view the source code on GitHub.' : 'View the source code on GitHub to see how it works.'}
-                    </p>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-                        {project.live && project.live !== '#' && (
-                            <a href={project.live} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 28px', fontSize: '15px', fontWeight: 600, borderRadius: '10px', backgroundColor: theme.accent, color: '#fff', textDecoration: 'none' }}><ExternalLink size={18} /> View Live Demo</a>
-                        )}
-                        {project.github && project.github !== '#' && (
-                            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 28px', fontSize: '15px', fontWeight: 600, borderRadius: '10px', border: `2px solid ${theme.border}`, backgroundColor: 'transparent', color: theme.text, textDecoration: 'none' }}><Github size={18} /> View Source Code</a>
-                        )}
-                    </div>
-                    <a href="#" onClick={(e) => { e.preventDefault(); window.location.hash = ''; }} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '40px', color: theme.textMuted, textDecoration: 'none', fontSize: '14px' }}><ChevronLeft size={16} /> Back to all projects</a>
-                </div>
-            </section>
+            </main>
         </div>
     );
 }
@@ -3001,6 +2987,7 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
     const [errors, setErrors] = useState({});
     const modalRef = useRef(null);
     const firstInputRef = useRef(null);
+    const successHeadingRef = useRef(null);
 
     const onCloseRef = useRef(onClose);
 
@@ -3065,6 +3052,7 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
             setIsBubbleDeleting(false);
             setIsSubmitted(false);
             setErrors({});
+            setSubmitError('');
         }
     }, [isOpen]);
 
@@ -3080,8 +3068,9 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
             // Focus trap
             if (e.key === 'Tab' && modalRef.current) {
                 const focusableElements = modalRef.current.querySelectorAll(
-                    'button, input, textarea, [tabindex]:not([tabindex="-1"])'
+                    'button:not([disabled]), a[href], input, textarea, [tabindex]:not([tabindex="-1"])'
                 );
+                if (focusableElements.length === 0) return;
                 const firstElement = focusableElements[0];
                 const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -3097,8 +3086,11 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
 
         document.addEventListener('keydown', handleKeyDown);
 
+        // Remember what opened the modal so focus can return there on close
+        const previouslyFocused = document.activeElement;
+
         // Focus first input when modal opens
-        setTimeout(() => {
+        const focusTimer = setTimeout(() => {
             if (firstInputRef.current) {
                 firstInputRef.current.focus();
             }
@@ -3108,10 +3100,17 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
         document.body.style.overflow = 'hidden';
 
         return () => {
+            clearTimeout(focusTimer);
             document.removeEventListener('keydown', handleKeyDown);
             document.body.style.overflow = '';
+            if (previouslyFocused && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
         };
     }, [isOpen]);
+
+    // Move focus to the confirmation so keyboard and screen reader users know the message was sent
+    useEffect(() => {
+        if (isSubmitted) successHeadingRef.current?.focus();
+    }, [isSubmitted]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -3131,11 +3130,14 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
         }
         if (!formData.message.trim()) newErrors.message = 'Message is required';
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        const firstInvalid = ['name', 'email', 'message'].find((field) => newErrors[field]);
+        if (firstInvalid) document.getElementById(`contact-${firstInvalid}`)?.focus();
+        return !firstInvalid;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSending) return;
         setSubmitError('');
 
         if (!validateForm()) return;
@@ -3231,6 +3233,9 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
           border-color: ${theme.accent} !important;
           box-shadow: 0 0 0 3px ${darkMode ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)'} !important;
         }
+        .modal-done-btn:hover { border-color: ${theme.accent} !important; color: ${theme.accent} !important; }
+        .modal-done-btn:focus-visible, .modal-input:focus-visible { outline: none; }
+        [role="dialog"] button:focus-visible { outline: 2px solid ${theme.accent}; outline-offset: 2px; }
         .modal-input::placeholder {
           color: ${theme.textMuted};
           opacity: 0.7;
@@ -3239,6 +3244,7 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
 
             {/* Overlay */}
             <div
+                aria-hidden="true"
                 onClick={onClose}
                 style={{
                     position: 'fixed',
@@ -3280,7 +3286,8 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                 {/* Close button */}
                 <button
                     onClick={onClose}
-                    aria-label="Close modal"
+                    type="button"
+                    aria-label="Close contact form"
                     style={{
                         position: 'absolute',
                         top: '16px',
@@ -3400,15 +3407,23 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                         }}>
                             ✅
                         </div>
-                        <h3 style={{ fontSize: '20px', fontWeight: 600, color: theme.text, marginBottom: '8px' }}>
+                        <h3 ref={successHeadingRef} tabIndex={-1} style={{ fontSize: '20px', fontWeight: 600, color: theme.text, marginBottom: '8px', outline: 'none' }}>
                             Message sent!
                         </h3>
-                        <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.6 }}>
+                        <p style={{ fontSize: '14px', color: theme.textMuted, lineHeight: 1.6, marginBottom: '24px' }}>
                             Thanks — I’ll get back to you soon.
                         </p>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="modal-done-btn"
+                            style={{ padding: '10px 22px', fontSize: '14px', fontWeight: 500, fontFamily: "'Sora', sans-serif", borderRadius: '10px', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'}`, backgroundColor: 'transparent', color: theme.text, cursor: 'pointer' }}
+                        >
+                            Done
+                        </button>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <form onSubmit={handleSubmit} noValidate aria-busy={isSending} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                         <div>
                             <label htmlFor="contact-name" style={{
                                 display: 'block',
@@ -3430,13 +3445,14 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                                 className="modal-input"
                                 aria-required="true"
                                 aria-invalid={!!errors.name}
+                                aria-describedby={errors.name ? 'contact-name-error' : undefined}
                                 style={{
                                     ...inputStyle,
                                     ...(errors.name ? errorStyle : {}),
                                 }}
                             />
                             {errors.name && (
-                                <p style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.name}</p>
+                                <p id="contact-name-error" style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.name}</p>
                             )}
                         </div>
 
@@ -3460,13 +3476,14 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                                 className="modal-input"
                                 aria-required="true"
                                 aria-invalid={!!errors.email}
+                                aria-describedby={errors.email ? 'contact-email-error' : undefined}
                                 style={{
                                     ...inputStyle,
                                     ...(errors.email ? errorStyle : {}),
                                 }}
                             />
                             {errors.email && (
-                                <p style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.email}</p>
+                                <p id="contact-email-error" style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.email}</p>
                             )}
                         </div>
 
@@ -3490,6 +3507,7 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                                 className="modal-input"
                                 aria-required="true"
                                 aria-invalid={!!errors.message}
+                                aria-describedby={errors.message ? 'contact-message-error' : undefined}
                                 style={{
                                     ...inputStyle,
                                     resize: 'vertical',
@@ -3498,9 +3516,16 @@ function ContactModal({ isOpen, onClose, theme, darkMode, prefersReducedMotion }
                                 }}
                             />
                             {errors.message && (
-                                <p style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.message}</p>
+                                <p id="contact-message-error" style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>{errors.message}</p>
                             )}
                         </div>
+
+                        {submitError && (
+                            <p role="alert" style={{ fontSize: '13px', lineHeight: 1.5, color: darkMode ? '#fca5a5' : '#b91c1c', backgroundColor: darkMode ? 'rgba(239,68,68,0.1)' : 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.35)', borderRadius: '10px', padding: '10px 14px' }}>
+                                {submitError} You can also email me directly at{' '}
+                                <a href="mailto:abeedmulla10@gmail.com" style={{ color: 'inherit', fontWeight: 600 }}>abeedmulla10@gmail.com</a>.
+                            </p>
+                        )}
 
                         <button
                             type="submit"
