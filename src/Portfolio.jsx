@@ -779,10 +779,9 @@ function MainPortfolio() {
 
     const typewriterPhrases = [
         "Computer Science Honours Student",
+        "Software Developer",
         "Full-Stack Developer",
-        "Problem Solver",
-        "Android Developer",
-        "AI Enthusiast",
+        "AI-Enthusiast",
     ];
 
     const cursorDotRef = useRef(null);
@@ -1485,13 +1484,13 @@ function MainPortfolio() {
                     )}
 
                     <div style={{ ...styles.container, width: '100%', position: 'relative', zIndex: 2 }}>
-                        <div className="fade-in"><p style={{ ...styles.sectionTitle, marginBottom: '24px' }}>Hi, I'm</p></div>
-                        <h1 className="fade-in fade-in-delay-1" style={{ ...styles.heading, fontSize: 'clamp(40px, 8vw, 72px)', marginBottom: '16px' }}>Abeed Mulla</h1>
-                        <h2 className="fade-in fade-in-delay-2" style={{ fontSize: 'clamp(20px, 4vw, 28px)', fontWeight: 400, color: theme.textMuted, marginBottom: '32px', minHeight: '1.4em' }}>{typewriterText}<span className="typewriter-cursor" style={{ color: theme.accent }}>|</span></h2>
-                        <p className="fade-in fade-in-delay-3" style={{ ...styles.paragraph, marginBottom: '40px', maxWidth: '560px' }}>I care about how software behaves in real life: edge cases, user experience, performance, and maintainability. I enjoy understanding <em>why</em> something works, not just making it work.</p>
+                        <div className="fade-in"><p style={{ ...styles.sectionTitle, fontSize: '14px', marginBottom: '24px' }}>Hi, I'm</p></div>
+                        <h1 className="fade-in fade-in-delay-1" style={{ ...styles.heading, fontSize: 'clamp(44px, 8vw, 88px)', marginBottom: '20px' }}>Abeed Mulla</h1>
+                        <h2 className="fade-in fade-in-delay-2" style={{ fontSize: 'clamp(22px, 4vw, 34px)', fontWeight: 400, color: theme.textMuted, marginBottom: '32px', minHeight: '1.4em' }}>{typewriterText}<span className="typewriter-cursor" style={{ color: theme.accent }}>|</span></h2>
+                        <p className="fade-in fade-in-delay-3" style={{ ...styles.paragraph, fontSize: 'clamp(16px, 1.4vw, 19px)', marginBottom: '44px', maxWidth: '680px' }}>I'm a Computer Science (Honours, Co-op) student at Dalhousie University, graduating in December 2026. Currently working as a Software Engineer Intern at AXIS Capital, I have hands-on experience developing production applications using React, TypeScript, .NET APIs, and SQL Server. I enjoy building reliable, user-focused software and am seeking full-time opportunities across software development after graduation.</p>
                         <div className="fade-in fade-in-delay-4" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                            <a href="#projects" style={{ ...styles.button, ...styles.buttonPrimary }} onClick={(e) => { e.preventDefault(); scrollToSection('#projects'); }}>View Projects <ArrowRight size={16} /></a>
-                            <a href="/resume.pdf" style={{ ...styles.button, ...styles.buttonSecondary }}><Download size={16} /> Download Resume</a>
+                            <a href="#projects" style={{ ...styles.button, ...styles.buttonPrimary, padding: '14px 28px', fontSize: '15px' }} onClick={(e) => { e.preventDefault(); scrollToSection('#projects'); }}>View Projects <ArrowRight size={18} /></a>
+                            <a href="/resume.pdf" style={{ ...styles.button, ...styles.buttonSecondary, padding: '14px 28px', fontSize: '15px' }}><Download size={18} /> Download Resume</a>
                         </div>
 
                         {/* Mobile Robot - below text, centered */}
